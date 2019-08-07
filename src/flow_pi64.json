@@ -1,1 +1,2330 @@
-[{"id":"7c750ec3.77a1f","type":"tab","label":"LEDhelloworld","disabled":false,"info":""},{"id":"6b6874c6.92734c","type":"tab","label":"LEDendpoint"},{"id":"ba3488cb.ce1ee8","type":"tab","label":"SENSORendpoint"},{"id":"3be51d61.9a1f92","type":"rpi-gpio out","z":"7c750ec3.77a1f","name":"","pin":"12","set":true,"level":"0","freq":"","out":"out","x":460,"y":160,"wires":[]},{"id":"a83bda4e.a036b8","type":"rpi-gpio out","z":"7c750ec3.77a1f","name":"","pin":"16","set":true,"level":"0","freq":"","out":"out","x":460,"y":220,"wires":[]},{"id":"89a6aaac.856d28","type":"rpi-gpio out","z":"7c750ec3.77a1f","name":"","pin":"18","set":true,"level":"0","freq":"","out":"out","x":460,"y":280,"wires":[]},{"id":"e4db7b39.88ecf8","type":"inject","z":"7c750ec3.77a1f","name":"","topic":"","payload":"1","payloadType":"num","repeat":"","crontab":"","once":false,"onceDelay":0.1,"x":250,"y":180,"wires":[["3be51d61.9a1f92"]]},{"id":"23a9e81c.7afad8","type":"inject","z":"7c750ec3.77a1f","name":"","topic":"","payload":"0","payloadType":"num","repeat":"","crontab":"","once":false,"onceDelay":0.1,"x":250,"y":140,"wires":[["3be51d61.9a1f92","1f2b2484.146d4b"]]},{"id":"50478004.99b1f","type":"inject","z":"7c750ec3.77a1f","name":"","topic":"","payload":"1","payloadType":"num","repeat":"","crontab":"","once":false,"onceDelay":0.1,"x":250,"y":280,"wires":[["a83bda4e.a036b8"]]},{"id":"5d8d81c5.40699","type":"inject","z":"7c750ec3.77a1f","name":"","topic":"","payload":"0","payloadType":"num","repeat":"","crontab":"","once":false,"onceDelay":0.1,"x":250,"y":240,"wires":[["a83bda4e.a036b8"]]},{"id":"b066fd7b.a98d9","type":"inject","z":"7c750ec3.77a1f","name":"","topic":"","payload":"1","payloadType":"num","repeat":"","crontab":"","once":false,"onceDelay":0.1,"x":250,"y":380,"wires":[["89a6aaac.856d28"]]},{"id":"20c94d9b.23c6a2","type":"inject","z":"7c750ec3.77a1f","name":"","topic":"","payload":"0","payloadType":"num","repeat":"","crontab":"","once":false,"onceDelay":0.1,"x":250,"y":340,"wires":[["89a6aaac.856d28"]]},{"id":"8df265b4.dc78d8","type":"inject","z":"7c750ec3.77a1f","name":"全消灯","topic":"","payload":"0","payloadType":"num","repeat":"","crontab":"","once":false,"onceDelay":0.1,"x":250,"y":60,"wires":[["3be51d61.9a1f92","a83bda4e.a036b8","89a6aaac.856d28"]]},{"id":"b1a6914f.11f18","type":"http in","z":"6b6874c6.92734c","name":"","url":"/setled","method":"get","swaggerDoc":"","x":270,"y":80,"wires":[["1c9521d9.41b89e","58350701.510ba8"]]},{"id":"27d579d8.918316","type":"template","z":"6b6874c6.92734c","name":"returnmsg","field":"payload","fieldType":"msg","format":"handlebars","syntax":"mustache","template":"LED setting OK {{payload}}","x":840,"y":180,"wires":[["d76f0682.61db48"]]},{"id":"d76f0682.61db48","type":"http response","z":"6b6874c6.92734c","name":"","statusCode":"","headers":{},"x":990,"y":180,"wires":[]},{"id":"1c9521d9.41b89e","type":"debug","z":"6b6874c6.92734c","name":"","active":true,"tosidebar":true,"console":false,"tostatus":false,"complete":"payload","x":444.5,"y":74,"wires":[]},{"id":"6d1d4d4e.610284","type":"comment","z":"6b6874c6.92734c","name":"LED点灯/消灯時刻設定","info":"マザーからGETが送られてくるので、\nパラメタ\n- ontime　点灯時刻\n- offtime　消灯時刻\nを受け取る。\n\nそれに合わせて\nLEDの点灯消灯設定を行うプログラムは任せました。","x":114.5,"y":34,"wires":[]},{"id":"5bdb0655.4ac928","type":"debug","z":"6b6874c6.92734c","name":"","active":true,"tosidebar":true,"console":false,"tostatus":false,"complete":"false","x":850,"y":140,"wires":[]},{"id":"ae5f679.3c66298","type":"comment","z":"6b6874c6.92734c","name":"LED点灯/消灯状態切替","info":"１時間に１度、現在時刻と点灯/消灯設定時刻の照らし合わせを行う\n\n最終的に、onかoffかnoneが出てきます。","x":114.5,"y":254,"wires":[]},{"id":"4dec3e3a.57e0d","type":"comment","z":"6b6874c6.92734c","name":"Mother時刻設定","info":"","x":94.5,"y":74,"wires":[]},{"id":"cc191916.55cc68","type":"comment","z":"6b6874c6.92734c","name":"保存","info":"","x":290,"y":140,"wires":[]},{"id":"1d26901.4c4b57","type":"comment","z":"6b6874c6.92734c","name":"時刻設定読み込み","info":"","x":130,"y":360,"wires":[]},{"id":"451d9b12.67fe24","type":"file in","z":"6b6874c6.92734c","name":"","filename":"/home/pi/configure.txt","format":"utf8","chunk":false,"sendError":false,"x":360,"y":360,"wires":[["c0be426b.e2eeb","18df8902.93c0e7"]]},{"id":"add839d2.81fb28","type":"comment","z":"6b6874c6.92734c","name":"時間間隔トリガ","info":"","x":100,"y":300,"wires":[]},{"id":"58b7d761.8b4bf8","type":"inject","z":"6b6874c6.92734c","name":"","topic":"","payload":"","payloadType":"date","repeat":"15","crontab":"","once":true,"onceDelay":0.1,"x":310,"y":300,"wires":[[]],"outputLabels":["test1"]},{"id":"c0be426b.e2eeb","type":"debug","z":"6b6874c6.92734c","name":"","active":true,"tosidebar":true,"console":false,"tostatus":false,"complete":"false","x":590,"y":360,"wires":[]},{"id":"18df8902.93c0e7","type":"function","z":"6b6874c6.92734c","name":"match","func":"var conf = msg.payload.split(',');\nvar ontime = Number(conf[0]);\nvar offtime = Number(conf[1]);\n\nvar jikan= new Date();\nvar hour = jikan.getHours();\n\nmsg.hour = hour\n\nif(ontime < offtime){\n    if((hour < ontime) || (offtime < hour)){\n        msg.payload = 0\n        msg.debug = \"1\"\n    }\n    else{\n        msg.payload = 1\n        msg.debug = \"2\"\n    }\n}\nelse if(ontime > offtime){\n    if((hour < offtime) || (ontime < hour)){\n        msg.payload = 1\n        msg.debug = \"3\"\n    }\n    else{\n        msg.payload = 0\n        msg.debug = \"4\"\n    }\n}\nelse{\n    msg.payload = 0\n}\n\nreturn msg;","outputs":1,"noerr":0,"x":570,"y":420,"wires":[["3d7ae119.7fea6e","7261a74b.dd62e8","f2c1757b.c167f8","605acf33.7120b"]]},{"id":"58350701.510ba8","type":"template","z":"6b6874c6.92734c","name":"content","field":"payload","fieldType":"msg","format":"handlebars","syntax":"mustache","template":"{{req.query.ontime}},{{req.query.offtime}}","output":"str","x":440,"y":140,"wires":[["7b08e678.498738"]]},{"id":"7b08e678.498738","type":"file","z":"6b6874c6.92734c","name":"","filename":"/home/pi/configure.txt","appendNewline":false,"createDir":false,"overwriteFile":"true","x":640,"y":140,"wires":[["5bdb0655.4ac928","27d579d8.918316"]]},{"id":"f1f4b9a5.a09de8","type":"comment","z":"6b6874c6.92734c","name":"点灯/消灯時刻か？","info":"","x":390,"y":420,"wires":[]},{"id":"3d7ae119.7fea6e","type":"rpi-gpio out","z":"6b6874c6.92734c","name":"","pin":"12","set":true,"level":"0","freq":"","out":"out","x":720,"y":520,"wires":[]},{"id":"7261a74b.dd62e8","type":"rpi-gpio out","z":"6b6874c6.92734c","name":"","pin":"16","set":true,"level":"0","freq":"","out":"out","x":720,"y":560,"wires":[]},{"id":"f2c1757b.c167f8","type":"rpi-gpio out","z":"6b6874c6.92734c","name":"","pin":"18","set":true,"level":"0","freq":"","out":"out","x":720,"y":600,"wires":[]},{"id":"1f2b2484.146d4b","type":"debug","z":"7c750ec3.77a1f","name":"","active":true,"tosidebar":true,"console":false,"tostatus":false,"complete":"false","x":460,"y":100,"wires":[]},{"id":"605acf33.7120b","type":"debug","z":"6b6874c6.92734c","name":"","active":true,"tosidebar":true,"console":false,"tostatus":false,"complete":"debug","x":730,"y":460,"wires":[]},{"id":"3ba82f48.e7b0a","type":"comment","z":"6b6874c6.92734c","name":"各LED点消灯要求を受け、各色を点消灯する","info":"","x":190,"y":680,"wires":[]},{"id":"5dec334c.3b22cc","type":"debug","z":"6b6874c6.92734c","name":"","active":true,"tosidebar":true,"console":false,"tostatus":false,"complete":"payload","x":470,"y":740,"wires":[]},{"id":"e78dcf03.ac329","type":"http in","z":"6b6874c6.92734c","name":"","url":"/redled","method":"get","upload":false,"swaggerDoc":"","x":281,"y":746,"wires":[["5dec334c.3b22cc","d91e84d8.36b418"]]},{"id":"14272f5d.78f501","type":"template","z":"6b6874c6.92734c","name":"returnmsg","field":"payload","fieldType":"msg","format":"handlebars","syntax":"mustache","template":"RED LED SET","x":760,"y":860,"wires":[["3ecd319b.9082ee"]]},{"id":"3ecd319b.9082ee","type":"http response","z":"6b6874c6.92734c","name":"","statusCode":"","headers":{},"x":890,"y":860,"wires":[]},{"id":"5b7c7224.b10acc","type":"comment","z":"6b6874c6.92734c","name":"Mother 赤LED要求","info":"","x":110,"y":740,"wires":[]},{"id":"9038197a.567b08","type":"comment","z":"6b6874c6.92734c","name":"赤点灯","info":"","x":290,"y":800,"wires":[]},{"id":"942e4a5a.b07a38","type":"rpi-gpio out","z":"6b6874c6.92734c","name":"","pin":"18","set":true,"level":"0","freq":"","out":"out","x":600,"y":860,"wires":[]},{"id":"d91e84d8.36b418","type":"function","z":"6b6874c6.92734c","name":"match","func":"var state = msg.payload.state;\nstate = Number(state)\n\nif (state > 0){\n    msg.payload = 1\n}\nelse{\n    msg.payload = 0\n}\n\nreturn msg;","outputs":1,"noerr":0,"x":450,"y":820,"wires":[["942e4a5a.b07a38","14272f5d.78f501"]]},{"id":"26725d7b.7f3a82","type":"debug","z":"6b6874c6.92734c","name":"","active":true,"tosidebar":true,"console":false,"tostatus":false,"complete":"payload","x":470,"y":940,"wires":[]},{"id":"6a8eace3.292c64","type":"http in","z":"6b6874c6.92734c","name":"","url":"/greenled","method":"get","upload":false,"swaggerDoc":"","x":281,"y":946,"wires":[["26725d7b.7f3a82","cf4e4c20.8454"]]},{"id":"1ea1b6a5.9c20f9","type":"template","z":"6b6874c6.92734c","name":"returnmsg","field":"payload","fieldType":"msg","format":"handlebars","syntax":"mustache","template":"RED LED SET","x":760,"y":1060,"wires":[["9e62ffd4.fd5c"]]},{"id":"9e62ffd4.fd5c","type":"http response","z":"6b6874c6.92734c","name":"","statusCode":"","headers":{},"x":890,"y":1060,"wires":[]},{"id":"4c582599.ea012c","type":"comment","z":"6b6874c6.92734c","name":"Mother 緑LED要求","info":"","x":110,"y":940,"wires":[]},{"id":"c0d1d426.15fce8","type":"comment","z":"6b6874c6.92734c","name":"緑点灯","info":"","x":290,"y":1000,"wires":[]},{"id":"cf4e4c20.8454","type":"function","z":"6b6874c6.92734c","name":"match","func":"var state = msg.payload.state;\nstate = Number(state)\n\nif (state > 0){\n    msg.payload = 1\n}\nelse{\n    msg.payload = 0\n}\n\nreturn msg;","outputs":1,"noerr":0,"x":450,"y":1020,"wires":[["1ea1b6a5.9c20f9","e71ed6c2.e7bba8"]]},{"id":"409d7b7b.393f34","type":"debug","z":"6b6874c6.92734c","name":"","active":true,"tosidebar":true,"console":false,"tostatus":false,"complete":"payload","x":470,"y":1140,"wires":[]},{"id":"a13c4f1.b82f2b","type":"http in","z":"6b6874c6.92734c","name":"","url":"/blueled","method":"get","upload":false,"swaggerDoc":"","x":281,"y":1146,"wires":[["409d7b7b.393f34","80b555de.3835e8"]]},{"id":"1ea01ea9.3e68a1","type":"template","z":"6b6874c6.92734c","name":"returnmsg","field":"payload","fieldType":"msg","format":"handlebars","syntax":"mustache","template":"RED LED SET","x":760,"y":1260,"wires":[["a9baf77a.6893f8"]]},{"id":"a9baf77a.6893f8","type":"http response","z":"6b6874c6.92734c","name":"","statusCode":"","headers":{},"x":890,"y":1260,"wires":[]},{"id":"d8eed2e0.0fd28","type":"comment","z":"6b6874c6.92734c","name":"Mother 青LED要求","info":"","x":110,"y":1140,"wires":[]},{"id":"12970ec8.7390e1","type":"comment","z":"6b6874c6.92734c","name":"青点灯","info":"","x":290,"y":1200,"wires":[]},{"id":"80b555de.3835e8","type":"function","z":"6b6874c6.92734c","name":"match","func":"var state = msg.payload.state;\nstate = Number(state)\n\nif (state > 0){\n    msg.payload = 1\n}\nelse{\n    msg.payload = 0\n}\n\nreturn msg;","outputs":1,"noerr":0,"x":450,"y":1220,"wires":[["1ea01ea9.3e68a1","21e619b2.11ab26"]]},{"id":"e71ed6c2.e7bba8","type":"rpi-gpio out","z":"6b6874c6.92734c","name":"","pin":"16","set":true,"level":"0","freq":"","out":"out","x":600,"y":1060,"wires":[]},{"id":"21e619b2.11ab26","type":"rpi-gpio out","z":"6b6874c6.92734c","name":"","pin":"12","set":true,"level":"0","freq":"","out":"out","x":600,"y":1260,"wires":[]},{"id":"841b5c4b.00827","type":"http in","z":"6b6874c6.92734c","name":"","url":"/getled","method":"get","upload":false,"swaggerDoc":"","x":290,"y":1380,"wires":[["db9beede.3606d","3c3b56c9.3f4baa"]]},{"id":"5d1cebad.d797a4","type":"template","z":"6b6874c6.92734c","name":"returnmsg","field":"payload","fieldType":"msg","format":"handlebars","syntax":"mustache","template":"ontime, offtime = {{payload}}","x":700,"y":1480,"wires":[["e98f8e61.271a9"]]},{"id":"e98f8e61.271a9","type":"http response","z":"6b6874c6.92734c","name":"","statusCode":"","headers":{},"x":850,"y":1480,"wires":[]},{"id":"db9beede.3606d","type":"debug","z":"6b6874c6.92734c","name":"","active":true,"tosidebar":true,"console":false,"tostatus":false,"complete":"payload","x":464.5,"y":1374,"wires":[]},{"id":"5c9f60dd.b9935","type":"comment","z":"6b6874c6.92734c","name":"LED点灯/消灯時刻設定","info":"マザーからGETが送られてくるので、\nパラメタ\n- ontime　点灯時刻\n- offtime　消灯時刻\nを受け取る。\n\nそれに合わせて\nLEDの点灯消灯設定を行うプログラムは任せました。","x":134.5,"y":1334,"wires":[]},{"id":"96a4cc23.a95e9","type":"debug","z":"6b6874c6.92734c","name":"","active":true,"tosidebar":true,"console":false,"tostatus":false,"complete":"false","x":710,"y":1440,"wires":[]},{"id":"5d9bf92f.e2c5d8","type":"comment","z":"6b6874c6.92734c","name":"Mother時刻設定","info":"","x":114.5,"y":1374,"wires":[]},{"id":"2c597fcf.a0051","type":"comment","z":"6b6874c6.92734c","name":"保存","info":"","x":310,"y":1440,"wires":[]},{"id":"3c3b56c9.3f4baa","type":"file in","z":"6b6874c6.92734c","name":"","filename":"/home/pi/configure.txt","format":"utf8","chunk":false,"sendError":false,"x":500,"y":1440,"wires":[["96a4cc23.a95e9","5d1cebad.d797a4"]]},{"id":"767a9a7f.28c2c4","type":"debug","z":"ba3488cb.ce1ee8","name":"","active":true,"tosidebar":true,"console":false,"tostatus":false,"complete":"payload","x":470,"y":120,"wires":[]},{"id":"25aed342.85979c","type":"http in","z":"ba3488cb.ce1ee8","name":"","url":"/getdata","method":"get","upload":false,"swaggerDoc":"","x":292,"y":123,"wires":[["767a9a7f.28c2c4","d2dfcb06.cdc058"]]},{"id":"422ef024.b2f3","type":"template","z":"ba3488cb.ce1ee8","name":"returnmsg","field":"payload","fieldType":"msg","format":"handlebars","syntax":"mustache","template":"{{payload}}","output":"str","x":940,"y":240,"wires":[["859dd1c4.b5e51"]]},{"id":"859dd1c4.b5e51","type":"http response","z":"ba3488cb.ce1ee8","name":"","x":1070,"y":240,"wires":[]},{"id":"f1d1ee6c.d386f","type":"comment","z":"ba3488cb.ce1ee8","name":"【センサデータの送信】","info":"マザーからGETが送られてくるので、\nセンサデータをJSONで返す","x":130,"y":40,"wires":[]},{"id":"985eb9d8.8d1a18","type":"serial out","z":"ba3488cb.ce1ee8","name":"","serial":"","x":510,"y":440,"wires":[]},{"id":"fadaf126.b049f","type":"comment","z":"ba3488cb.ce1ee8","name":"Arduinoデータ送信要求","info":"シリアルに対して0x61を送ると，Arduinoから返事が帰ってきます．\n0x61はASCIIコードではaになるので，文字列のaを送るとよいです．","x":120,"y":400,"wires":[]},{"id":"fdc8e93e.9b5888","type":"debug","z":"ba3488cb.ce1ee8","name":"","active":true,"tosidebar":true,"console":false,"tostatus":false,"complete":"payload","x":530,"y":400,"wires":[]},{"id":"edd86fd5.a7108","type":"comment","z":"ba3488cb.ce1ee8","name":"Mother データ要求","info":"","x":110,"y":120,"wires":[]},{"id":"e56251eb.005c1","type":"comment","z":"ba3488cb.ce1ee8","name":"マザーに送信","info":"JSON形式ぽいので送ります","x":770,"y":240,"wires":[]},{"id":"f993cde2.5a5ba","type":"inject","z":"ba3488cb.ce1ee8","name":"デバッグ用Arduino信号","topic":"","payload":"{\"Humidity\":\"50\",\"temperature\":\"20\",\"PHP\":\"7\",\"CO2\":\"1\"}","payloadType":"json","repeat":"","crontab":"","once":false,"onceDelay":0.1,"x":440,"y":540,"wires":[["6b00dd9b.a4cde4","5484e96c.540b28"]]},{"id":"6376d0ff.ab0e9","type":"serial in","z":"ba3488cb.ce1ee8","x":360,"y":500,"wires":[["cfa462aa.b2c15"]]},{"id":"cfa462aa.b2c15","type":"function","z":"ba3488cb.ce1ee8","name":"","func":"\nreturn msg;","outputs":1,"noerr":0,"x":500,"y":500,"wires":[[]]},{"id":"55511bf3.b2aed4","type":"comment","z":"ba3488cb.ce1ee8","name":"Arduinoデータ受信","info":"Arduinoから送られてきたデータはfunction関数でJSON形式\nに変換されます．\n\nデバッグ用にセンサデータをJSONで出力するINJECTIONを用意しました\nArduino-ラズパイ間の仕様変更時はfunction関数でがんばります","x":190,"y":500,"wires":[]},{"id":"674517fb.f90278","type":"inject","z":"ba3488cb.ce1ee8","name":"要求信号","topic":"","payload":"a","payloadType":"str","repeat":"300","crontab":"","once":true,"onceDelay":0.1,"x":330,"y":400,"wires":[["fdc8e93e.9b5888","985eb9d8.8d1a18"]]},{"id":"af6fed3b.48805","type":"debug","z":"ba3488cb.ce1ee8","name":"","active":true,"tosidebar":true,"console":false,"tostatus":false,"complete":"payload","x":1070,"y":680,"wires":[]},{"id":"72520775.7ee108","type":"function","z":"ba3488cb.ce1ee8","name":"","func":"var data = msg.payload\nmsg.payload = \"{\"+\n              data.slice(0,-2)+\n              \"}\"\nreturn msg;","outputs":1,"noerr":0,"x":790,"y":180,"wires":[["422ef024.b2f3","51b5f7fb.daab58"]]},{"id":"9302d69c.eba1c8","type":"file","z":"ba3488cb.ce1ee8","name":"","filename":"/home/pi/Project/sensor/data/log.json","appendNewline":false,"createDir":false,"overwriteFile":"false","x":810,"y":680,"wires":[["af6fed3b.48805"]]},{"id":"5484e96c.540b28","type":"json","z":"ba3488cb.ce1ee8","name":"toJsonStr","property":"payload","action":"str","pretty":false,"x":440,"y":600,"wires":[["3c45b67c.bfd43a"]]},{"id":"553f5326.1cdeac","type":"debug","z":"ba3488cb.ce1ee8","name":"","active":true,"tosidebar":true,"console":false,"tostatus":false,"complete":"datestr","x":750,"y":600,"wires":[]},{"id":"3c45b67c.bfd43a","type":"function","z":"ba3488cb.ce1ee8","name":"addDate","func":"// Payloadから日付オブジェクトを生成\nvar date = new Date();\nvar year = date.getFullYear();\nvar month = date.getMonth()+1;\nvar day = date.getDate();\nvar hour = date.getHours();\nvar minute = date.getMinutes();\nvar second = date.getSeconds();\nmsg.datestr = year+\"/\"+\n              month+\"/\"+\n              day+\"/\"+\n              hour+\"/\"+\n              minute+\"/\"+\n              second\n// 日付文字列に変換\n//msg.datestr = date.toString();\n// Payloadに追加\nmsg.payload = '\"'+msg.datestr+'\"'+\n              \":\"+\n              msg.payload+\n              \",\"\n// 次のNodeへmsgオブジェクトを返す\nreturn msg;","outputs":1,"noerr":0,"x":580,"y":600,"wires":[["553f5326.1cdeac","9ac2dfe7.d5593","9302d69c.eba1c8"]]},{"id":"9ac2dfe7.d5593","type":"debug","z":"ba3488cb.ce1ee8","name":"","active":true,"tosidebar":true,"console":false,"tostatus":false,"complete":"payload","x":750,"y":640,"wires":[]},{"id":"6b00dd9b.a4cde4","type":"debug","z":"ba3488cb.ce1ee8","name":"","active":true,"tosidebar":true,"console":false,"tostatus":false,"complete":"payload","x":670,"y":540,"wires":[]},{"id":"2f73e9be.33b286","type":"comment","z":"ba3488cb.ce1ee8","name":"日付追加","info":"","x":260,"y":600,"wires":[]},{"id":"7efc5a75.9f9c64","type":"comment","z":"ba3488cb.ce1ee8","name":"保存","info":"","x":590,"y":680,"wires":[]},{"id":"d2dfcb06.cdc058","type":"file in","z":"ba3488cb.ce1ee8","name":"","filename":"/home/pi/Project/sensor/data/log.json","format":"utf8","chunk":false,"sendError":false,"x":550,"y":180,"wires":[["72520775.7ee108"]]},{"id":"51b5f7fb.daab58","type":"debug","z":"ba3488cb.ce1ee8","name":"","active":true,"tosidebar":true,"console":false,"tostatus":false,"complete":"false","x":950,"y":180,"wires":[]},{"id":"94e1b42f.82b128","type":"comment","z":"ba3488cb.ce1ee8","name":"load&JSON加工","info":"","x":288,"y":180,"wires":[]},{"id":"a74df8c4.8c6538","type":"file","z":"ba3488cb.ce1ee8","name":"","filename":"/home/pi/Project/sensor/data/log.json","appendNewline":true,"createDir":false,"overwriteFile":"delete","x":1050,"y":300,"wires":[[]]},{"id":"d84f3fd7.ee864","type":"comment","z":"ba3488cb.ce1ee8","name":"溜めたデータを削除","info":"","x":750,"y":300,"wires":[]},{"id":"ed714524.fa09b8","type":"comment","z":"ba3488cb.ce1ee8","name":"【センサデータの保存】","info":"マザーからGETが送られてくるので、\nセンサデータをJSONで返す","x":130,"y":340,"wires":[]}]
+[
+    {
+        "id": "7c750ec3.77a1f",
+        "type": "tab",
+        "label": "LEDhelloworld",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "6b6874c6.92734c",
+        "type": "tab",
+        "label": "LEDendpoint"
+    },
+    {
+        "id": "ba3488cb.ce1ee8",
+        "type": "tab",
+        "label": "SENSORendpoint"
+    },
+    {
+        "id": "985b8bb0.7f59b8",
+        "type": "tab",
+        "label": "CAMERAendpoint"
+    },
+    {
+        "id": "704bd9bf.69ccd8",
+        "type": "serial-port",
+        "z": "",
+        "serialport": "/dev/ttyACM0",
+        "serialbaud": "9600",
+        "databits": "8",
+        "parity": "none",
+        "stopbits": "1",
+        "newline": "\\n",
+        "bin": "false",
+        "out": "char",
+        "addchar": false,
+        "responsetimeout": "10000"
+    },
+    {
+        "id": "3be51d61.9a1f92",
+        "type": "rpi-gpio out",
+        "z": "7c750ec3.77a1f",
+        "name": "",
+        "pin": "12",
+        "set": true,
+        "level": "0",
+        "freq": "",
+        "out": "out",
+        "x": 460,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "a83bda4e.a036b8",
+        "type": "rpi-gpio out",
+        "z": "7c750ec3.77a1f",
+        "name": "",
+        "pin": "16",
+        "set": true,
+        "level": "0",
+        "freq": "",
+        "out": "out",
+        "x": 460,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "89a6aaac.856d28",
+        "type": "rpi-gpio out",
+        "z": "7c750ec3.77a1f",
+        "name": "",
+        "pin": "18",
+        "set": true,
+        "level": "0",
+        "freq": "",
+        "out": "out",
+        "x": 460,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "e4db7b39.88ecf8",
+        "type": "inject",
+        "z": "7c750ec3.77a1f",
+        "name": "",
+        "topic": "",
+        "payload": "1",
+        "payloadType": "num",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 250,
+        "y": 180,
+        "wires": [
+            [
+                "3be51d61.9a1f92"
+            ]
+        ]
+    },
+    {
+        "id": "23a9e81c.7afad8",
+        "type": "inject",
+        "z": "7c750ec3.77a1f",
+        "name": "",
+        "topic": "",
+        "payload": "0",
+        "payloadType": "num",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 250,
+        "y": 140,
+        "wires": [
+            [
+                "3be51d61.9a1f92",
+                "1f2b2484.146d4b"
+            ]
+        ]
+    },
+    {
+        "id": "50478004.99b1f",
+        "type": "inject",
+        "z": "7c750ec3.77a1f",
+        "name": "",
+        "topic": "",
+        "payload": "1",
+        "payloadType": "num",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 250,
+        "y": 280,
+        "wires": [
+            [
+                "a83bda4e.a036b8"
+            ]
+        ]
+    },
+    {
+        "id": "5d8d81c5.40699",
+        "type": "inject",
+        "z": "7c750ec3.77a1f",
+        "name": "",
+        "topic": "",
+        "payload": "0",
+        "payloadType": "num",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 250,
+        "y": 240,
+        "wires": [
+            [
+                "a83bda4e.a036b8"
+            ]
+        ]
+    },
+    {
+        "id": "b066fd7b.a98d9",
+        "type": "inject",
+        "z": "7c750ec3.77a1f",
+        "name": "",
+        "topic": "",
+        "payload": "1",
+        "payloadType": "num",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 250,
+        "y": 380,
+        "wires": [
+            [
+                "89a6aaac.856d28"
+            ]
+        ]
+    },
+    {
+        "id": "20c94d9b.23c6a2",
+        "type": "inject",
+        "z": "7c750ec3.77a1f",
+        "name": "",
+        "topic": "",
+        "payload": "0",
+        "payloadType": "num",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 250,
+        "y": 340,
+        "wires": [
+            [
+                "89a6aaac.856d28"
+            ]
+        ]
+    },
+    {
+        "id": "8df265b4.dc78d8",
+        "type": "inject",
+        "z": "7c750ec3.77a1f",
+        "name": "全消灯",
+        "topic": "",
+        "payload": "0",
+        "payloadType": "num",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 250,
+        "y": 60,
+        "wires": [
+            [
+                "3be51d61.9a1f92",
+                "a83bda4e.a036b8",
+                "89a6aaac.856d28"
+            ]
+        ]
+    },
+    {
+        "id": "b1a6914f.11f18",
+        "type": "http in",
+        "z": "6b6874c6.92734c",
+        "name": "",
+        "url": "/setled",
+        "method": "get",
+        "swaggerDoc": "",
+        "x": 270,
+        "y": 80,
+        "wires": [
+            [
+                "1c9521d9.41b89e",
+                "58350701.510ba8"
+            ]
+        ]
+    },
+    {
+        "id": "27d579d8.918316",
+        "type": "template",
+        "z": "6b6874c6.92734c",
+        "name": "returnmsg",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "LED setting OK {{payload}}",
+        "x": 840,
+        "y": 180,
+        "wires": [
+            [
+                "d76f0682.61db48"
+            ]
+        ]
+    },
+    {
+        "id": "d76f0682.61db48",
+        "type": "http response",
+        "z": "6b6874c6.92734c",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 990,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "1c9521d9.41b89e",
+        "type": "debug",
+        "z": "6b6874c6.92734c",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "x": 444.5,
+        "y": 74,
+        "wires": []
+    },
+    {
+        "id": "6d1d4d4e.610284",
+        "type": "comment",
+        "z": "6b6874c6.92734c",
+        "name": "LED点灯/消灯時刻設定",
+        "info": "マザーからGETが送られてくるので、\nパラメタ\n- ontime　点灯時刻\n- offtime　消灯時刻\nを受け取る。\n\nそれに合わせて\nLEDの点灯消灯設定を行うプログラムは任せました。",
+        "x": 114.5,
+        "y": 34,
+        "wires": []
+    },
+    {
+        "id": "5bdb0655.4ac928",
+        "type": "debug",
+        "z": "6b6874c6.92734c",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 850,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "ae5f679.3c66298",
+        "type": "comment",
+        "z": "6b6874c6.92734c",
+        "name": "LED点灯/消灯状態切替",
+        "info": "１時間に１度、現在時刻と点灯/消灯設定時刻の照らし合わせを行う\n\n最終的に、onかoffかnoneが出てきます。",
+        "x": 114.5,
+        "y": 254,
+        "wires": []
+    },
+    {
+        "id": "4dec3e3a.57e0d",
+        "type": "comment",
+        "z": "6b6874c6.92734c",
+        "name": "Mother時刻設定",
+        "info": "",
+        "x": 94.5,
+        "y": 74,
+        "wires": []
+    },
+    {
+        "id": "cc191916.55cc68",
+        "type": "comment",
+        "z": "6b6874c6.92734c",
+        "name": "保存",
+        "info": "",
+        "x": 290,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "1d26901.4c4b57",
+        "type": "comment",
+        "z": "6b6874c6.92734c",
+        "name": "時刻設定読み込み",
+        "info": "",
+        "x": 130,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "451d9b12.67fe24",
+        "type": "file in",
+        "z": "6b6874c6.92734c",
+        "name": "",
+        "filename": "/home/pi/configure.txt",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "x": 360,
+        "y": 360,
+        "wires": [
+            [
+                "c0be426b.e2eeb",
+                "18df8902.93c0e7"
+            ]
+        ]
+    },
+    {
+        "id": "add839d2.81fb28",
+        "type": "comment",
+        "z": "6b6874c6.92734c",
+        "name": "時間間隔トリガ",
+        "info": "",
+        "x": 100,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "58b7d761.8b4bf8",
+        "type": "inject",
+        "z": "6b6874c6.92734c",
+        "name": "",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "15",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "x": 310,
+        "y": 300,
+        "wires": [
+            [
+                "451d9b12.67fe24"
+            ]
+        ],
+        "outputLabels": [
+            "test1"
+        ]
+    },
+    {
+        "id": "c0be426b.e2eeb",
+        "type": "debug",
+        "z": "6b6874c6.92734c",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 590,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "18df8902.93c0e7",
+        "type": "function",
+        "z": "6b6874c6.92734c",
+        "name": "match",
+        "func": "var conf = msg.payload.split(',');\nvar ontime = Number(conf[0]);\nvar offtime = Number(conf[1]);\n\nvar jikan= new Date();\nvar hour = jikan.getHours();\n\nmsg.hour = hour\n\nif(ontime < offtime){\n    if((hour < ontime) || (offtime < hour)){\n        msg.payload = 0\n        msg.debug = \"1\"\n    }\n    else{\n        msg.payload = 1\n        msg.debug = \"2\"\n    }\n}\nelse if(ontime > offtime){\n    if((hour < offtime) || (ontime < hour)){\n        msg.payload = 1\n        msg.debug = \"3\"\n    }\n    else{\n        msg.payload = 0\n        msg.debug = \"4\"\n    }\n}\nelse{\n    msg.payload = 0\n}\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 570,
+        "y": 420,
+        "wires": [
+            [
+                "3d7ae119.7fea6e",
+                "7261a74b.dd62e8",
+                "f2c1757b.c167f8",
+                "605acf33.7120b"
+            ]
+        ]
+    },
+    {
+        "id": "58350701.510ba8",
+        "type": "template",
+        "z": "6b6874c6.92734c",
+        "name": "content",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "{{req.query.ontime}},{{req.query.offtime}}",
+        "output": "str",
+        "x": 440,
+        "y": 140,
+        "wires": [
+            [
+                "7b08e678.498738"
+            ]
+        ]
+    },
+    {
+        "id": "7b08e678.498738",
+        "type": "file",
+        "z": "6b6874c6.92734c",
+        "name": "",
+        "filename": "/home/pi/configure.txt",
+        "appendNewline": false,
+        "createDir": false,
+        "overwriteFile": "true",
+        "x": 640,
+        "y": 140,
+        "wires": [
+            [
+                "5bdb0655.4ac928",
+                "27d579d8.918316"
+            ]
+        ]
+    },
+    {
+        "id": "f1f4b9a5.a09de8",
+        "type": "comment",
+        "z": "6b6874c6.92734c",
+        "name": "点灯/消灯時刻か？",
+        "info": "",
+        "x": 390,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "3d7ae119.7fea6e",
+        "type": "rpi-gpio out",
+        "z": "6b6874c6.92734c",
+        "name": "",
+        "pin": "12",
+        "set": true,
+        "level": "0",
+        "freq": "",
+        "out": "out",
+        "x": 720,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "7261a74b.dd62e8",
+        "type": "rpi-gpio out",
+        "z": "6b6874c6.92734c",
+        "name": "",
+        "pin": "16",
+        "set": true,
+        "level": "0",
+        "freq": "",
+        "out": "out",
+        "x": 720,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "f2c1757b.c167f8",
+        "type": "rpi-gpio out",
+        "z": "6b6874c6.92734c",
+        "name": "",
+        "pin": "18",
+        "set": true,
+        "level": "0",
+        "freq": "",
+        "out": "out",
+        "x": 720,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "1f2b2484.146d4b",
+        "type": "debug",
+        "z": "7c750ec3.77a1f",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 460,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "605acf33.7120b",
+        "type": "debug",
+        "z": "6b6874c6.92734c",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "debug",
+        "x": 730,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "3ba82f48.e7b0a",
+        "type": "comment",
+        "z": "6b6874c6.92734c",
+        "name": "各LED点消灯要求を受け、各色を点消灯する",
+        "info": "",
+        "x": 190,
+        "y": 680,
+        "wires": []
+    },
+    {
+        "id": "5dec334c.3b22cc",
+        "type": "debug",
+        "z": "6b6874c6.92734c",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "x": 470,
+        "y": 740,
+        "wires": []
+    },
+    {
+        "id": "e78dcf03.ac329",
+        "type": "http in",
+        "z": "6b6874c6.92734c",
+        "name": "",
+        "url": "/redled",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 281,
+        "y": 746,
+        "wires": [
+            [
+                "5dec334c.3b22cc",
+                "d91e84d8.36b418"
+            ]
+        ]
+    },
+    {
+        "id": "14272f5d.78f501",
+        "type": "template",
+        "z": "6b6874c6.92734c",
+        "name": "returnmsg",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "RED LED SET",
+        "x": 760,
+        "y": 860,
+        "wires": [
+            [
+                "3ecd319b.9082ee"
+            ]
+        ]
+    },
+    {
+        "id": "3ecd319b.9082ee",
+        "type": "http response",
+        "z": "6b6874c6.92734c",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 890,
+        "y": 860,
+        "wires": []
+    },
+    {
+        "id": "5b7c7224.b10acc",
+        "type": "comment",
+        "z": "6b6874c6.92734c",
+        "name": "Mother 赤LED要求",
+        "info": "",
+        "x": 110,
+        "y": 740,
+        "wires": []
+    },
+    {
+        "id": "9038197a.567b08",
+        "type": "comment",
+        "z": "6b6874c6.92734c",
+        "name": "赤点灯",
+        "info": "",
+        "x": 290,
+        "y": 800,
+        "wires": []
+    },
+    {
+        "id": "942e4a5a.b07a38",
+        "type": "rpi-gpio out",
+        "z": "6b6874c6.92734c",
+        "name": "",
+        "pin": "18",
+        "set": true,
+        "level": "0",
+        "freq": "",
+        "out": "out",
+        "x": 600,
+        "y": 860,
+        "wires": []
+    },
+    {
+        "id": "d91e84d8.36b418",
+        "type": "function",
+        "z": "6b6874c6.92734c",
+        "name": "match",
+        "func": "var state = msg.payload.state;\nstate = Number(state)\n\nif (state > 0){\n    msg.payload = 1\n}\nelse{\n    msg.payload = 0\n}\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 450,
+        "y": 820,
+        "wires": [
+            [
+                "942e4a5a.b07a38",
+                "14272f5d.78f501"
+            ]
+        ]
+    },
+    {
+        "id": "26725d7b.7f3a82",
+        "type": "debug",
+        "z": "6b6874c6.92734c",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "x": 470,
+        "y": 940,
+        "wires": []
+    },
+    {
+        "id": "6a8eace3.292c64",
+        "type": "http in",
+        "z": "6b6874c6.92734c",
+        "name": "",
+        "url": "/greenled",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 281,
+        "y": 946,
+        "wires": [
+            [
+                "26725d7b.7f3a82",
+                "cf4e4c20.8454"
+            ]
+        ]
+    },
+    {
+        "id": "1ea1b6a5.9c20f9",
+        "type": "template",
+        "z": "6b6874c6.92734c",
+        "name": "returnmsg",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "RED LED SET",
+        "x": 760,
+        "y": 1060,
+        "wires": [
+            [
+                "9e62ffd4.fd5c"
+            ]
+        ]
+    },
+    {
+        "id": "9e62ffd4.fd5c",
+        "type": "http response",
+        "z": "6b6874c6.92734c",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 890,
+        "y": 1060,
+        "wires": []
+    },
+    {
+        "id": "4c582599.ea012c",
+        "type": "comment",
+        "z": "6b6874c6.92734c",
+        "name": "Mother 緑LED要求",
+        "info": "",
+        "x": 110,
+        "y": 940,
+        "wires": []
+    },
+    {
+        "id": "c0d1d426.15fce8",
+        "type": "comment",
+        "z": "6b6874c6.92734c",
+        "name": "緑点灯",
+        "info": "",
+        "x": 290,
+        "y": 1000,
+        "wires": []
+    },
+    {
+        "id": "cf4e4c20.8454",
+        "type": "function",
+        "z": "6b6874c6.92734c",
+        "name": "match",
+        "func": "var state = msg.payload.state;\nstate = Number(state)\n\nif (state > 0){\n    msg.payload = 1\n}\nelse{\n    msg.payload = 0\n}\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 450,
+        "y": 1020,
+        "wires": [
+            [
+                "1ea1b6a5.9c20f9",
+                "e71ed6c2.e7bba8"
+            ]
+        ]
+    },
+    {
+        "id": "409d7b7b.393f34",
+        "type": "debug",
+        "z": "6b6874c6.92734c",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "x": 470,
+        "y": 1140,
+        "wires": []
+    },
+    {
+        "id": "a13c4f1.b82f2b",
+        "type": "http in",
+        "z": "6b6874c6.92734c",
+        "name": "",
+        "url": "/blueled",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 281,
+        "y": 1146,
+        "wires": [
+            [
+                "409d7b7b.393f34",
+                "80b555de.3835e8"
+            ]
+        ]
+    },
+    {
+        "id": "1ea01ea9.3e68a1",
+        "type": "template",
+        "z": "6b6874c6.92734c",
+        "name": "returnmsg",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "RED LED SET",
+        "x": 760,
+        "y": 1260,
+        "wires": [
+            [
+                "a9baf77a.6893f8"
+            ]
+        ]
+    },
+    {
+        "id": "a9baf77a.6893f8",
+        "type": "http response",
+        "z": "6b6874c6.92734c",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 890,
+        "y": 1260,
+        "wires": []
+    },
+    {
+        "id": "d8eed2e0.0fd28",
+        "type": "comment",
+        "z": "6b6874c6.92734c",
+        "name": "Mother 青LED要求",
+        "info": "",
+        "x": 110,
+        "y": 1140,
+        "wires": []
+    },
+    {
+        "id": "12970ec8.7390e1",
+        "type": "comment",
+        "z": "6b6874c6.92734c",
+        "name": "青点灯",
+        "info": "",
+        "x": 290,
+        "y": 1200,
+        "wires": []
+    },
+    {
+        "id": "80b555de.3835e8",
+        "type": "function",
+        "z": "6b6874c6.92734c",
+        "name": "match",
+        "func": "var state = msg.payload.state;\nstate = Number(state)\n\nif (state > 0){\n    msg.payload = 1\n}\nelse{\n    msg.payload = 0\n}\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 450,
+        "y": 1220,
+        "wires": [
+            [
+                "1ea01ea9.3e68a1",
+                "21e619b2.11ab26"
+            ]
+        ]
+    },
+    {
+        "id": "e71ed6c2.e7bba8",
+        "type": "rpi-gpio out",
+        "z": "6b6874c6.92734c",
+        "name": "",
+        "pin": "16",
+        "set": true,
+        "level": "0",
+        "freq": "",
+        "out": "out",
+        "x": 600,
+        "y": 1060,
+        "wires": []
+    },
+    {
+        "id": "21e619b2.11ab26",
+        "type": "rpi-gpio out",
+        "z": "6b6874c6.92734c",
+        "name": "",
+        "pin": "12",
+        "set": true,
+        "level": "0",
+        "freq": "",
+        "out": "out",
+        "x": 600,
+        "y": 1260,
+        "wires": []
+    },
+    {
+        "id": "841b5c4b.00827",
+        "type": "http in",
+        "z": "6b6874c6.92734c",
+        "name": "",
+        "url": "/getled",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 290,
+        "y": 1380,
+        "wires": [
+            [
+                "db9beede.3606d",
+                "3c3b56c9.3f4baa"
+            ]
+        ]
+    },
+    {
+        "id": "5d1cebad.d797a4",
+        "type": "template",
+        "z": "6b6874c6.92734c",
+        "name": "returnmsg",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "ontime, offtime = {{payload}}",
+        "x": 700,
+        "y": 1480,
+        "wires": [
+            [
+                "e98f8e61.271a9"
+            ]
+        ]
+    },
+    {
+        "id": "e98f8e61.271a9",
+        "type": "http response",
+        "z": "6b6874c6.92734c",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 850,
+        "y": 1480,
+        "wires": []
+    },
+    {
+        "id": "db9beede.3606d",
+        "type": "debug",
+        "z": "6b6874c6.92734c",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "x": 464.5,
+        "y": 1374,
+        "wires": []
+    },
+    {
+        "id": "5c9f60dd.b9935",
+        "type": "comment",
+        "z": "6b6874c6.92734c",
+        "name": "LED点灯/消灯時刻設定",
+        "info": "マザーからGETが送られてくるので、\nパラメタ\n- ontime　点灯時刻\n- offtime　消灯時刻\nを受け取る。\n\nそれに合わせて\nLEDの点灯消灯設定を行うプログラムは任せました。",
+        "x": 134.5,
+        "y": 1334,
+        "wires": []
+    },
+    {
+        "id": "96a4cc23.a95e9",
+        "type": "debug",
+        "z": "6b6874c6.92734c",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 710,
+        "y": 1440,
+        "wires": []
+    },
+    {
+        "id": "5d9bf92f.e2c5d8",
+        "type": "comment",
+        "z": "6b6874c6.92734c",
+        "name": "Mother時刻設定",
+        "info": "",
+        "x": 114.5,
+        "y": 1374,
+        "wires": []
+    },
+    {
+        "id": "2c597fcf.a0051",
+        "type": "comment",
+        "z": "6b6874c6.92734c",
+        "name": "保存",
+        "info": "",
+        "x": 310,
+        "y": 1440,
+        "wires": []
+    },
+    {
+        "id": "3c3b56c9.3f4baa",
+        "type": "file in",
+        "z": "6b6874c6.92734c",
+        "name": "",
+        "filename": "/home/pi/configure.txt",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "x": 500,
+        "y": 1440,
+        "wires": [
+            [
+                "96a4cc23.a95e9",
+                "5d1cebad.d797a4"
+            ]
+        ]
+    },
+    {
+        "id": "767a9a7f.28c2c4",
+        "type": "debug",
+        "z": "ba3488cb.ce1ee8",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "x": 470,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "25aed342.85979c",
+        "type": "http in",
+        "z": "ba3488cb.ce1ee8",
+        "name": "",
+        "url": "/getdata",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 292,
+        "y": 123,
+        "wires": [
+            [
+                "767a9a7f.28c2c4",
+                "d2dfcb06.cdc058"
+            ]
+        ]
+    },
+    {
+        "id": "422ef024.b2f3",
+        "type": "template",
+        "z": "ba3488cb.ce1ee8",
+        "name": "returnmsg",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "{{payload}}",
+        "output": "str",
+        "x": 940,
+        "y": 240,
+        "wires": [
+            [
+                "859dd1c4.b5e51"
+            ]
+        ]
+    },
+    {
+        "id": "859dd1c4.b5e51",
+        "type": "http response",
+        "z": "ba3488cb.ce1ee8",
+        "name": "",
+        "x": 1070,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "f1d1ee6c.d386f",
+        "type": "comment",
+        "z": "ba3488cb.ce1ee8",
+        "name": "【センサデータの送信】",
+        "info": "マザーからGETが送られてくるので、\nセンサデータをJSONで返す",
+        "x": 130,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "985eb9d8.8d1a18",
+        "type": "serial out",
+        "z": "ba3488cb.ce1ee8",
+        "name": "",
+        "serial": "704bd9bf.69ccd8",
+        "x": 540,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "fadaf126.b049f",
+        "type": "comment",
+        "z": "ba3488cb.ce1ee8",
+        "name": "Arduinoデータ送信要求",
+        "info": "シリアルに対して0x61を送ると，Arduinoから返事が帰ってきます．\n0x61はASCIIコードではaになるので，文字列のaを送るとよいです．",
+        "x": 120,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "fdc8e93e.9b5888",
+        "type": "debug",
+        "z": "ba3488cb.ce1ee8",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "x": 530,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "edd86fd5.a7108",
+        "type": "comment",
+        "z": "ba3488cb.ce1ee8",
+        "name": "Mother データ要求",
+        "info": "",
+        "x": 110,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "e56251eb.005c1",
+        "type": "comment",
+        "z": "ba3488cb.ce1ee8",
+        "name": "マザーに送信",
+        "info": "JSON形式ぽいので送ります",
+        "x": 770,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "f993cde2.5a5ba",
+        "type": "inject",
+        "z": "ba3488cb.ce1ee8",
+        "name": "デバッグ用Arduino信号",
+        "topic": "",
+        "payload": "{\"Humidity\":\"50\",\"temperature\":\"20\",\"PH\":\"7\",\"CO2\":\"1\"}",
+        "payloadType": "json",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 280,
+        "y": 540,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "6376d0ff.ab0e9",
+        "type": "serial in",
+        "z": "ba3488cb.ce1ee8",
+        "name": "",
+        "serial": "704bd9bf.69ccd8",
+        "x": 310,
+        "y": 480,
+        "wires": [
+            [
+                "cfa462aa.b2c15"
+            ]
+        ]
+    },
+    {
+        "id": "cfa462aa.b2c15",
+        "type": "function",
+        "z": "ba3488cb.ce1ee8",
+        "name": "",
+        "func": "\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 500,
+        "y": 500,
+        "wires": [
+            [
+                "5484e96c.540b28",
+                "6b00dd9b.a4cde4"
+            ]
+        ]
+    },
+    {
+        "id": "55511bf3.b2aed4",
+        "type": "comment",
+        "z": "ba3488cb.ce1ee8",
+        "name": "Arduinoデータ受信",
+        "info": "Arduinoから送られてきたデータはfunction関数でJSON形式\nに変換されます．\n\nデバッグ用にセンサデータをJSONで出力するINJECTIONを用意しました\nArduino-ラズパイ間の仕様変更時はfunction関数でがんばります",
+        "x": 110,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "674517fb.f90278",
+        "type": "inject",
+        "z": "ba3488cb.ce1ee8",
+        "name": "要求信号",
+        "topic": "",
+        "payload": "a",
+        "payloadType": "str",
+        "repeat": "300",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "x": 330,
+        "y": 400,
+        "wires": [
+            [
+                "fdc8e93e.9b5888",
+                "985eb9d8.8d1a18"
+            ]
+        ]
+    },
+    {
+        "id": "af6fed3b.48805",
+        "type": "debug",
+        "z": "ba3488cb.ce1ee8",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "x": 1070,
+        "y": 680,
+        "wires": []
+    },
+    {
+        "id": "72520775.7ee108",
+        "type": "function",
+        "z": "ba3488cb.ce1ee8",
+        "name": "",
+        "func": "var data = msg.payload\nmsg.payload = \"{\"+\n              data.slice(0,-2)+\n              \"}\"\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 790,
+        "y": 180,
+        "wires": [
+            [
+                "422ef024.b2f3",
+                "51b5f7fb.daab58"
+            ]
+        ]
+    },
+    {
+        "id": "9302d69c.eba1c8",
+        "type": "file",
+        "z": "ba3488cb.ce1ee8",
+        "name": "",
+        "filename": "/home/pi/Project/sensor/data/log.json",
+        "appendNewline": false,
+        "createDir": false,
+        "overwriteFile": "false",
+        "x": 830,
+        "y": 680,
+        "wires": [
+            [
+                "af6fed3b.48805"
+            ]
+        ]
+    },
+    {
+        "id": "5484e96c.540b28",
+        "type": "json",
+        "z": "ba3488cb.ce1ee8",
+        "name": "toJsonStr",
+        "property": "payload",
+        "action": "str",
+        "pretty": false,
+        "x": 440,
+        "y": 600,
+        "wires": [
+            [
+                "3c45b67c.bfd43a"
+            ]
+        ]
+    },
+    {
+        "id": "553f5326.1cdeac",
+        "type": "debug",
+        "z": "ba3488cb.ce1ee8",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "datestr",
+        "targetType": "msg",
+        "x": 750,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "3c45b67c.bfd43a",
+        "type": "function",
+        "z": "ba3488cb.ce1ee8",
+        "name": "addDate",
+        "func": "// Payloadから日付オブジェクトを生成\nfunction zeroPadding(num,length){\n    return ('0000000000' + num).slice(-length);\n}\n\nvar date = new Date();\nvar year = zeroPadding(date.getFullYear(), 4);\nvar month = zeroPadding(date.getMonth()+1, 2);\nvar day = zeroPadding(date.getDate(), 2);\nvar hour = zeroPadding(date.getHours(), 2);\nvar minute = zeroPadding(date.getMinutes(), 2);\nvar second = zeroPadding(date.getSeconds(), 2);\nmsg.datestr = year+\"/\"+\n              month+\"/\"+\n              day+\"/\"+\n              hour+\"/\"+\n              minute+\"/\"+\n              second\n// 日付文字列に変換\n//msg.datestr = date.toString();\n// Payloadに追加\nmsg.payload = '\"'+msg.datestr+'\"'+\n              \":\"+\n              msg.payload+\n              \",\"\n// 次のNodeへmsgオブジェクトを返す\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 580,
+        "y": 600,
+        "wires": [
+            [
+                "553f5326.1cdeac",
+                "9ac2dfe7.d5593",
+                "9302d69c.eba1c8"
+            ]
+        ]
+    },
+    {
+        "id": "9ac2dfe7.d5593",
+        "type": "debug",
+        "z": "ba3488cb.ce1ee8",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "x": 750,
+        "y": 640,
+        "wires": []
+    },
+    {
+        "id": "6b00dd9b.a4cde4",
+        "type": "debug",
+        "z": "ba3488cb.ce1ee8",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "x": 670,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "2f73e9be.33b286",
+        "type": "comment",
+        "z": "ba3488cb.ce1ee8",
+        "name": "日付追加",
+        "info": "",
+        "x": 260,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "7efc5a75.9f9c64",
+        "type": "comment",
+        "z": "ba3488cb.ce1ee8",
+        "name": "保存",
+        "info": "",
+        "x": 590,
+        "y": 680,
+        "wires": []
+    },
+    {
+        "id": "d2dfcb06.cdc058",
+        "type": "file in",
+        "z": "ba3488cb.ce1ee8",
+        "name": "",
+        "filename": "/home/pi/Project/sensor/data/log.json",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "x": 550,
+        "y": 180,
+        "wires": [
+            [
+                "72520775.7ee108"
+            ]
+        ]
+    },
+    {
+        "id": "51b5f7fb.daab58",
+        "type": "debug",
+        "z": "ba3488cb.ce1ee8",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 950,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "94e1b42f.82b128",
+        "type": "comment",
+        "z": "ba3488cb.ce1ee8",
+        "name": "load&JSON加工",
+        "info": "",
+        "x": 288,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "a74df8c4.8c6538",
+        "type": "file",
+        "z": "ba3488cb.ce1ee8",
+        "name": "",
+        "filename": "/home/pi/Project/sensor/data/log.json",
+        "appendNewline": true,
+        "createDir": false,
+        "overwriteFile": "delete",
+        "x": 1050,
+        "y": 300,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "d84f3fd7.ee864",
+        "type": "comment",
+        "z": "ba3488cb.ce1ee8",
+        "name": "溜めたデータを削除",
+        "info": "",
+        "x": 750,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "ed714524.fa09b8",
+        "type": "comment",
+        "z": "ba3488cb.ce1ee8",
+        "name": "【センサデータの保存】",
+        "info": "マザーからGETが送られてくるので、\nセンサデータをJSONで返す",
+        "x": 130,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "d0d632b6.c34e5",
+        "type": "comment",
+        "z": "985b8bb0.7f59b8",
+        "name": "Motherからのシャッター要求を受け、画像を撮影する",
+        "info": "",
+        "x": 220,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "55bdb5a.e04544c",
+        "type": "debug",
+        "z": "985b8bb0.7f59b8",
+        "name": "shutter64",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "x": 540,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "824870b0.099e9",
+        "type": "http in",
+        "z": "985b8bb0.7f59b8",
+        "name": "",
+        "url": "/shutter1",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 350,
+        "y": 620,
+        "wires": [
+            [
+                "55bdb5a.e04544c",
+                "9b31c9ba.944098"
+            ]
+        ]
+    },
+    {
+        "id": "c8cb129f.e92a7",
+        "type": "template",
+        "z": "985b8bb0.7f59b8",
+        "name": "returnmsg",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "{{payload}}",
+        "x": 750,
+        "y": 840,
+        "wires": [
+            [
+                "14297cbe.404e73"
+            ]
+        ]
+    },
+    {
+        "id": "14297cbe.404e73",
+        "type": "http response",
+        "z": "985b8bb0.7f59b8",
+        "name": "",
+        "x": 890,
+        "y": 840,
+        "wires": []
+    },
+    {
+        "id": "7e9d3b45.7fd8e4",
+        "type": "debug",
+        "z": "985b8bb0.7f59b8",
+        "name": "take photo64",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "filename",
+        "targetType": "msg",
+        "x": 750,
+        "y": 800,
+        "wires": []
+    },
+    {
+        "id": "973ee1be.87335",
+        "type": "comment",
+        "z": "985b8bb0.7f59b8",
+        "name": "Mother 未指定要求",
+        "info": "",
+        "x": 170,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "8b97ee3d.6c3e5",
+        "type": "comment",
+        "z": "985b8bb0.7f59b8",
+        "name": "写真撮影＆保存",
+        "info": "",
+        "x": 360,
+        "y": 800,
+        "wires": []
+    },
+    {
+        "id": "8a7f932e.22a62",
+        "type": "camerapi-takephoto",
+        "z": "985b8bb0.7f59b8",
+        "filemode": "1",
+        "filename": "",
+        "filedefpath": "0",
+        "filepath": "/home/pi/Pictures/",
+        "fileformat": "jpeg",
+        "resolution": "10",
+        "rotation": "0",
+        "fliph": "0",
+        "flipv": "0",
+        "brightness": "50",
+        "contrast": "0",
+        "sharpness": "0",
+        "quality": "80",
+        "imageeffect": "none",
+        "exposuremode": "auto",
+        "iso": "0",
+        "agcwait": "1.0",
+        "led": "0",
+        "awb": "auto",
+        "name": "",
+        "x": 560,
+        "y": 800,
+        "wires": [
+            [
+                "c8cb129f.e92a7",
+                "7e9d3b45.7fd8e4"
+            ]
+        ]
+    },
+    {
+        "id": "51e6b4.bdeba94c",
+        "type": "template",
+        "z": "985b8bb0.7f59b8",
+        "name": "create filename",
+        "field": "filename",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "photo_{{ipaddress}}_{{datestr}}.jpeg",
+        "output": "str",
+        "x": 1020,
+        "y": 680,
+        "wires": [
+            [
+                "8a7f932e.22a62",
+                "1517a94d.b38307"
+            ]
+        ]
+    },
+    {
+        "id": "71db2145.85f7e",
+        "type": "debug",
+        "z": "985b8bb0.7f59b8",
+        "name": "getimg64",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "x": 520,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "9fa6a7dc.b90b38",
+        "type": "http in",
+        "z": "985b8bb0.7f59b8",
+        "name": "",
+        "url": "/getimg1",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 370,
+        "y": 100,
+        "wires": [
+            [
+                "71db2145.85f7e",
+                "cf690cf5.6fb21"
+            ]
+        ]
+    },
+    {
+        "id": "dc2ff464.c7dbc8",
+        "type": "comment",
+        "z": "985b8bb0.7f59b8",
+        "name": "Motherからの画像要求を受け、画像データを返す",
+        "info": "",
+        "x": 200,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "c2294303.7e395",
+        "type": "file in",
+        "z": "985b8bb0.7f59b8",
+        "name": "",
+        "filename": "",
+        "format": "",
+        "sendError": true,
+        "x": 710,
+        "y": 320,
+        "wires": [
+            [
+                "d4e3f195.f5af9"
+            ]
+        ]
+    },
+    {
+        "id": "d4e3f195.f5af9",
+        "type": "change",
+        "z": "985b8bb0.7f59b8",
+        "name": "Set Headers",
+        "rules": [
+            {
+                "t": "set",
+                "p": "headers",
+                "pt": "msg",
+                "to": "{}",
+                "tot": "json"
+            },
+            {
+                "t": "set",
+                "p": "headers.content-type",
+                "pt": "msg",
+                "to": "image/jpeg",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 870,
+        "y": 320,
+        "wires": [
+            [
+                "75c7cec6.a5263",
+                "63ca0f66.4cd0f"
+            ]
+        ]
+    },
+    {
+        "id": "75c7cec6.a5263",
+        "type": "http response",
+        "z": "985b8bb0.7f59b8",
+        "name": "",
+        "x": 1030,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "63ca0f66.4cd0f",
+        "type": "file",
+        "z": "985b8bb0.7f59b8",
+        "name": "",
+        "filename": "",
+        "appendNewline": true,
+        "createDir": false,
+        "overwriteFile": "delete",
+        "x": 1030,
+        "y": 360,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "15d86c55.e88fd4",
+        "type": "debug",
+        "z": "985b8bb0.7f59b8",
+        "name": "auto-shutter",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "x": 390,
+        "y": 1000,
+        "wires": []
+    },
+    {
+        "id": "d6c46df3.dc0c3",
+        "type": "comment",
+        "z": "985b8bb0.7f59b8",
+        "name": "定期撮影",
+        "info": "",
+        "x": 80,
+        "y": 940,
+        "wires": []
+    },
+    {
+        "id": "751f86d6.0f8ce8",
+        "type": "inject",
+        "z": "985b8bb0.7f59b8",
+        "name": "",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "21600",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 190,
+        "y": 1000,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "9b31c9ba.944098",
+        "type": "function",
+        "z": "985b8bb0.7f59b8",
+        "name": "GenDate",
+        "func": "// Payloadから日付オブジェクトを生成\nfunction zeroPadding(num,length){\n    return ('0000000000' + num).slice(-length);\n}\n\nvar date = new Date();\nvar year = zeroPadding(date.getFullYear(), 4);\nvar month = zeroPadding(date.getMonth()+1, 2);\nvar day = zeroPadding(date.getDate(), 2);\nvar hour = zeroPadding(date.getHours(), 2);\nvar minute = zeroPadding(date.getMinutes(), 2);\nvar second = zeroPadding(date.getSeconds(), 2);\n\nmsg.datestr = year+\"\"+\n              month+\"\"+\n              day+\"\"+\n              hour+\"\"+\n              minute+\"\"+\n              second\n\n// 次のNodeへmsgオブジェクトを返す\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 540,
+        "y": 680,
+        "wires": [
+            [
+                "cd7e9bf3.ae5a78"
+            ]
+        ]
+    },
+    {
+        "id": "cd7e9bf3.ae5a78",
+        "type": "template",
+        "z": "985b8bb0.7f59b8",
+        "name": "GenIP",
+        "field": "ipaddress",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "64",
+        "output": "str",
+        "x": 870,
+        "y": 680,
+        "wires": [
+            [
+                "51e6b4.bdeba94c"
+            ]
+        ]
+    },
+    {
+        "id": "1216226.88120de",
+        "type": "debug",
+        "z": "985b8bb0.7f59b8",
+        "name": "path64",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "x": 1060,
+        "y": 740,
+        "wires": []
+    },
+    {
+        "id": "4929b5ca.15cb8c",
+        "type": "file",
+        "z": "985b8bb0.7f59b8",
+        "name": "",
+        "filename": "/home/pi/Project/Camera/list_takenphoto.txt",
+        "appendNewline": true,
+        "createDir": false,
+        "overwriteFile": "false",
+        "x": 810,
+        "y": 740,
+        "wires": [
+            [
+                "1216226.88120de"
+            ]
+        ]
+    },
+    {
+        "id": "1517a94d.b38307",
+        "type": "template",
+        "z": "985b8bb0.7f59b8",
+        "name": "addPath",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "/home/pi/Pictures/{{filename}}",
+        "output": "str",
+        "x": 540,
+        "y": 740,
+        "wires": [
+            [
+                "4929b5ca.15cb8c"
+            ]
+        ]
+    },
+    {
+        "id": "d8c1a226.df59b",
+        "type": "comment",
+        "z": "985b8bb0.7f59b8",
+        "name": "写真名保存",
+        "info": "",
+        "x": 340,
+        "y": 740,
+        "wires": []
+    },
+    {
+        "id": "fba3357a.38ab08",
+        "type": "debug",
+        "z": "985b8bb0.7f59b8",
+        "name": "take photo64",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "filename",
+        "targetType": "msg",
+        "x": 530,
+        "y": 1180,
+        "wires": []
+    },
+    {
+        "id": "3aa81869.8a33d8",
+        "type": "comment",
+        "z": "985b8bb0.7f59b8",
+        "name": "撮影＆保存",
+        "info": "",
+        "x": 140,
+        "y": 1180,
+        "wires": []
+    },
+    {
+        "id": "d994a231.664ab",
+        "type": "camerapi-takephoto",
+        "z": "985b8bb0.7f59b8",
+        "filemode": "1",
+        "filename": "",
+        "filedefpath": "0",
+        "filepath": "/home/pi/Pictures/",
+        "fileformat": "jpeg",
+        "resolution": "10",
+        "rotation": "0",
+        "fliph": "0",
+        "flipv": "0",
+        "brightness": "50",
+        "contrast": "0",
+        "sharpness": "0",
+        "quality": "80",
+        "imageeffect": "none",
+        "exposuremode": "auto",
+        "iso": "0",
+        "agcwait": "1.0",
+        "led": "0",
+        "awb": "auto",
+        "name": "",
+        "x": 340,
+        "y": 1180,
+        "wires": [
+            [
+                "fba3357a.38ab08"
+            ]
+        ]
+    },
+    {
+        "id": "2cb2619f.f0a26e",
+        "type": "template",
+        "z": "985b8bb0.7f59b8",
+        "name": "create filename",
+        "field": "filename",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "photo_{{ipaddress}}_{{datestr}}.jpeg",
+        "output": "str",
+        "x": 600,
+        "y": 1060,
+        "wires": [
+            [
+                "95c51902.5bf128"
+            ]
+        ]
+    },
+    {
+        "id": "5ebdbd57.d74b04",
+        "type": "function",
+        "z": "985b8bb0.7f59b8",
+        "name": "GenDate",
+        "func": "// Payloadから日付オブジェクトを生成\nfunction zeroPadding(num,length){\n    return ('0000000000' + num).slice(-length);\n}\n\nvar date = new Date();\nvar year = zeroPadding(date.getFullYear(), 4);\nvar month = zeroPadding(date.getMonth()+1, 2);\nvar day = zeroPadding(date.getDate(), 2);\nvar hour = zeroPadding(date.getHours(), 2);\nvar minute = zeroPadding(date.getMinutes(), 2);\nvar second = zeroPadding(date.getSeconds(), 2);\n\nmsg.datestr = year+\"\"+\n              month+\"\"+\n              day+\"\"+\n              hour+\"\"+\n              minute+\"\"+\n              second\n\n// 次のNodeへmsgオブジェクトを返す\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 440,
+        "y": 1060,
+        "wires": [
+            [
+                "2cb2619f.f0a26e"
+            ]
+        ]
+    },
+    {
+        "id": "425d0a61.638264",
+        "type": "template",
+        "z": "985b8bb0.7f59b8",
+        "name": "GenIP",
+        "field": "ipaddress",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "64",
+        "output": "str",
+        "x": 310,
+        "y": 1060,
+        "wires": [
+            [
+                "5ebdbd57.d74b04"
+            ]
+        ]
+    },
+    {
+        "id": "169ae615.de239a",
+        "type": "debug",
+        "z": "985b8bb0.7f59b8",
+        "name": "path64",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "x": 840,
+        "y": 1120,
+        "wires": []
+    },
+    {
+        "id": "3a72eaf.be2a416",
+        "type": "file",
+        "z": "985b8bb0.7f59b8",
+        "name": "",
+        "filename": "/home/pi/Project/Camera/list_takenphoto.txt",
+        "appendNewline": true,
+        "createDir": false,
+        "overwriteFile": "false",
+        "x": 590,
+        "y": 1120,
+        "wires": [
+            [
+                "169ae615.de239a"
+            ]
+        ]
+    },
+    {
+        "id": "95c51902.5bf128",
+        "type": "template",
+        "z": "985b8bb0.7f59b8",
+        "name": "addPath",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "/home/pi/Pictures/{{filename}}",
+        "output": "str",
+        "x": 320,
+        "y": 1120,
+        "wires": [
+            [
+                "3a72eaf.be2a416"
+            ]
+        ]
+    },
+    {
+        "id": "f8a1c2dd.8edb",
+        "type": "comment",
+        "z": "985b8bb0.7f59b8",
+        "name": "写真名保存",
+        "info": "",
+        "x": 140,
+        "y": 1120,
+        "wires": []
+    },
+    {
+        "id": "80220d9a.63343",
+        "type": "comment",
+        "z": "985b8bb0.7f59b8",
+        "name": "写真名生成",
+        "info": "",
+        "x": 340,
+        "y": 680,
+        "wires": []
+    },
+    {
+        "id": "3ac7b15a.5063de",
+        "type": "comment",
+        "z": "985b8bb0.7f59b8",
+        "name": "写真名生成",
+        "info": "",
+        "x": 140,
+        "y": 1060,
+        "wires": []
+    },
+    {
+        "id": "cf690cf5.6fb21",
+        "type": "file in",
+        "z": "985b8bb0.7f59b8",
+        "name": "",
+        "filename": "/home/pi/Project/Camera/list_takenphoto.txt",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "x": 630,
+        "y": 160,
+        "wires": [
+            [
+                "e214e045.aa93b"
+            ]
+        ]
+    },
+    {
+        "id": "bf630ad4.292568",
+        "type": "debug",
+        "z": "985b8bb0.7f59b8",
+        "name": "path64",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "filename",
+        "targetType": "msg",
+        "x": 1100,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "e214e045.aa93b",
+        "type": "function",
+        "z": "985b8bb0.7f59b8",
+        "name": "extract oldest",
+        "func": "var text = msg.payload;\n\nif(10 < text.length){\n    var arr = text.split(/\\r\\n|\\n/);\n    msg.filename = arr[0];\n    msg.payload = arr.slice(1, arr.length).join('\\n');\n}else{\n    msg.filename = \"None\";\n    msg.payload = \"None\";\n}\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 920,
+        "y": 160,
+        "wires": [
+            [
+                "bf630ad4.292568",
+                "d4d1da4d.c2db08"
+            ]
+        ]
+    },
+    {
+        "id": "cfa39691.a4c2c8",
+        "type": "file",
+        "z": "985b8bb0.7f59b8",
+        "name": "",
+        "filename": "/home/pi/Project/Camera/list_takenphoto.txt",
+        "appendNewline": false,
+        "createDir": false,
+        "overwriteFile": "true",
+        "x": 830,
+        "y": 420,
+        "wires": [
+            [
+                "eb943e61.0a486"
+            ]
+        ]
+    },
+    {
+        "id": "eb943e61.0a486",
+        "type": "debug",
+        "z": "985b8bb0.7f59b8",
+        "name": "fileinfo64",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "x": 1080,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "46129e11.4ea74",
+        "type": "comment",
+        "z": "985b8bb0.7f59b8",
+        "name": "写真名読込",
+        "info": "",
+        "x": 360,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "9533dbf3.9362d8",
+        "type": "comment",
+        "z": "985b8bb0.7f59b8",
+        "name": "Mother 未指定要求",
+        "info": "",
+        "x": 170,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "37a675f9.27f6ea",
+        "type": "comment",
+        "z": "985b8bb0.7f59b8",
+        "name": "Mother 指定要求",
+        "info": "",
+        "x": 160,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "e0e8c5ce.666008",
+        "type": "http in",
+        "z": "985b8bb0.7f59b8",
+        "name": "",
+        "url": "/shutter1_tempo",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 380,
+        "y": 560,
+        "wires": [
+            [
+                "19061448.a0523c",
+                "f70f50af.3ae46"
+            ]
+        ]
+    },
+    {
+        "id": "19061448.a0523c",
+        "type": "debug",
+        "z": "985b8bb0.7f59b8",
+        "name": "shutter_tempo64",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "x": 610,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "f70f50af.3ae46",
+        "type": "template",
+        "z": "985b8bb0.7f59b8",
+        "name": "changeVarName",
+        "field": "datestr",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "{{req.query.name}}",
+        "output": "str",
+        "x": 700,
+        "y": 660,
+        "wires": [
+            [
+                "cd7e9bf3.ae5a78"
+            ]
+        ]
+    },
+    {
+        "id": "ddf8fd24.bbc48",
+        "type": "comment",
+        "z": "985b8bb0.7f59b8",
+        "name": "写真送信",
+        "info": "",
+        "x": 1160,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "7fbb4923.de7f18",
+        "type": "comment",
+        "z": "985b8bb0.7f59b8",
+        "name": "写真削除",
+        "info": "",
+        "x": 1160,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "d4d1da4d.c2db08",
+        "type": "switch",
+        "z": "985b8bb0.7f59b8",
+        "name": "",
+        "property": "filename",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "None",
+                "vt": "str"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 570,
+        "y": 220,
+        "wires": [
+            [
+                "df226628.e6b348"
+            ],
+            [
+                "c2294303.7e395",
+                "cfa39691.a4c2c8"
+            ]
+        ]
+    },
+    {
+        "id": "8905d169.0e803",
+        "type": "comment",
+        "z": "985b8bb0.7f59b8",
+        "name": "None送信",
+        "info": "",
+        "x": 1040,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "d000fa42.dc1f68",
+        "type": "http response",
+        "z": "985b8bb0.7f59b8",
+        "name": "",
+        "x": 890,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "df226628.e6b348",
+        "type": "template",
+        "z": "985b8bb0.7f59b8",
+        "name": "returnmsg",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "None",
+        "x": 730,
+        "y": 220,
+        "wires": [
+            [
+                "d000fa42.dc1f68",
+                "68278c78.a28824"
+            ]
+        ]
+    },
+    {
+        "id": "68278c78.a28824",
+        "type": "debug",
+        "z": "985b8bb0.7f59b8",
+        "name": "getimg64",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "x": 900,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "a4ac2c9.daa04d",
+        "type": "comment",
+        "z": "985b8bb0.7f59b8",
+        "name": "写真名削除",
+        "info": "",
+        "x": 1260,
+        "y": 420,
+        "wires": []
+    }
+]
