@@ -1,0 +1,199 @@
+<HTML>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" type="text/css" href="mystyle.css">
+		<title>ロボティクス広場の植物工場</title>
+	</head>
+	<body>
+	<div id='pagebody'>
+		<header><!-- イントロダクションやナビゲーショングループであることを示す -->
+			<!-- ヘッダ -->
+			<div id="header"><h1><a href='./index.html'>ロボティクス広場の植物工場</a></h1></div>
+			
+			<nav><!-- ナビゲーションであることを示す -->
+				<!-- メインメニュー -->
+				<ul id="menu">
+					<li id="menu01" style="background-color:#ff7f7f"><a href="./controller.html">コントローラ</a></li>
+					<li id="menu02"><a href="./logger.html">ロガー</a></li>
+				</ul>
+			</nav>
+		</header>
+		<div id="content">
+			<div class="selectbox"><div class="select_setting">
+				<h2 class="st">LEDの点灯/消灯時刻を設定する</h2>
+				<form action="http://192.168.24.64:1880/setled" method="get">
+					<div class="st_button">
+						<button class="st" type="submit">設定</button>
+					</div>
+					<div class="st_pulldown">
+						<div class="pd_left">
+							<label for="ontime">何時に<br>つける？  </label>
+							<select name="ontime">
+								<option value="0">0</option>
+								<option value="1">1</option>
+								<option value="2">2</option>
+								<option value="3">3</option>
+								<option value="4">4</option>
+								<option value="5">5</option>
+								<option value="6">6</option>
+								<option value="7">7</option>
+								<option value="8">8</option>
+								<option value="9">9</option>
+								<option value="10">10</option>
+								<option value="11">11</option>
+								<option value="12">12</option>
+								<option value="13">13</option>
+								<option value="14">14</option>
+								<option value="15">15</option>
+								<option value="16">16</option>
+								<option value="17">17</option>
+								<option value="18">18</option>
+								<option value="19">19</option>
+								<option value="20">20</option>
+								<option value="21">21</option>
+								<option value="22">22</option>
+								<option value="23">23</option>
+							</select>時
+						</div>
+						<div class="pd_right">
+							<label for="offtime">何時に<br>消す？  </label>
+							<select name="offtime">
+								<option value="0">0</option>
+								<option value="1">1</option>
+								<option value="2">2</option>
+								<option value="3">3</option>
+								<option value="4">4</option>
+								<option value="5">5</option>
+								<option value="6">6</option>
+								<option value="7">7</option>
+								<option value="8">8</option>
+								<option value="9">9</option>
+								<option value="10">10</option>
+								<option value="11">11</option>
+								<option value="12">12</option>
+								<option value="13">13</option>
+								<option value="14">14</option>
+								<option value="15">15</option>
+								<option value="16">16</option>
+								<option value="17">17</option>
+								<option value="18">18</option>
+								<option value="19">19</option>
+								<option value="20">20</option>
+								<option value="21">21</option>
+								<option value="22">22</option>
+								<option value="23">23</option>
+							</select>時
+						</div>
+					</div>
+				</form>
+			</div></div>
+			<div class="selectbox"><div class="select_two">
+				<h2 class="s2">カメラ1</h2>
+				<div class='button_s2_left'>
+					<form action="http://192.168.24.64:1880/shutter1" method="get">
+						<input type="hidden" name="name" value="temporary">
+						<button class="s2" type="submit">
+							<img src="./icon/camera.png" alt="写真をとる" width=120 style="background-color:#ffffff;">
+							<br>写真をとる
+						</button>
+					</form>
+				</div>
+				<div class='button_s2_right'>
+					<form action="http://192.168.24.64:1880/getimg1_tempo" method="get">
+						<input type="hidden" name="name" value="temporary">
+						<button class="s2" type="submit">
+							<img src="./icon/photo.png" alt="写真を見る" width=120  style="background-color:#ffffff;">
+							<br>写真を見る
+						</button>
+					</form>
+				</div>
+			</div></div>
+			<div class="selectbox"><div class="select_two">
+				<h2 class="s2">カメラ2</h2>
+				<div class='button_s2_left'>
+					<form action="http://192.168.24.65:1880/shutter2" method="get">
+						<input type="hidden" name="name" value="temporary">
+						<button class="s2" type="submit">
+							<img src="./icon/camera.png" alt="写真をとる" width=120 style="background-color:#ffffff;">
+							<br>写真をとる
+						</button>
+					</form>
+				</div>
+				<div class='button_s2_right'>
+					<form action="http://192.168.24.65:1880/getimg2_tempo" method="get">
+						<input type="hidden" name="name" value="temporary">
+						<button class="s2" type="submit">
+							<img src="./icon/photo.png" alt="写真を見る" width=120  style="background-color:#ffffff;">
+							<br>写真を見る
+						</button>
+					</form>
+				</div>
+			</div></div>
+			<div class="selectbox"><div class="select_two">
+				<h2 class="s2" id="s2_red">あか いろ LED</h2>
+				<div class='button_s2_left'>
+					<form action="http://192.168.24.64:1880/redled" method="get">
+						<input type="hidden" name="state" value="1">
+						<button class="s2" type="submit">
+							<img src="./icon/led_red.png" alt="RED LED ON" width=120 style="background-color:#ffffff;">
+							<br>ON
+						</button>
+					</form>
+				</div>
+				<div class='button_s2_right'>
+					<form action="http://192.168.24.64:1880/redled" method="get">
+						<input type="hidden" name="state" value="0">
+						<button class="s2" type="submit">
+							<img src="./icon/led_dark.png" alt="RED LED OFF" width=120>
+							<br>OFF
+						</button>
+					</form>
+				</div>
+			</div></div>
+			<div class="selectbox"><div class="select_two">
+				<h2 class="s2" id="s2_blue">あお いろ LED</h2>
+				<div class='button_s2_left'>
+					<form action="http://192.168.24.64:1880/blueled" method="get">
+						<input type="hidden" name="state" value="1">
+						<button class="s2" type="submit">
+							<img src="./icon/led_blue.png" alt="BLUE LED ON" width=120 style="background-color:#ffffff;">
+							<br>ON
+						</button>
+					</form>
+				</div>
+				<div class='button_s2_right'>
+					<form action="http://192.168.24.64:1880/blueled" method="get">
+						<input type="hidden" name="state" value="0">
+						<button class="s2" type="submit">
+							<img src="./icon/led_dark.png" alt="BLUE LED OFF" width=120>
+							<br>OFF
+						</button>
+					</form>
+				</div>
+			</div></div>
+			<div class="selectbox"><div class="select_two">
+				<h2 class="s2" id="s2_green">みどり いろ LED</h2>
+				<div class='button_s2_left'>
+					<form action="http://192.168.24.64:1880/greenled" method="get">
+						<input type="hidden" name="state" value="1">
+						<button class="s2" type="submit">
+							<img src="./icon/led_green.png" alt="GREEN LED ON" width=120 style="background-color:#ffffff;">
+							<br>ON
+						</button>
+					</form>
+				</div>
+				<div class='button_s2_right'>
+					<form action="http://192.168.24.64:1880/greenled" method="get">
+						<input type="hidden" name="state" value="0">
+						<button class="s2" type="submit">
+							<img src="./icon/led_dark.png" alt="GREEN LED OFF" width=120>
+							<br>OFF
+						</button>
+					</form>
+				</div>
+			</div></div>
+		</div><!-- content -->
+	</div><!-- pagebody -->
+	</body>
+</HTML>
+

@@ -1,0 +1,177 @@
+@charset "utf-8";
+
+/*============================================
+全般的なスタイル
+============================================*/
+* {
+	margin:0; padding:0; 	/*全要素のマージン・パディングをリセット*/
+	line-height:1.5;	/*全要素の行の高さを1.5倍にする*/
+	color:#333333;		/*文字色*/
+} 
+body {
+	background-color:#999999;	/*ページ全体の背景色*/
+	text-align:center;		/*IE6以下でセンタリングするための対策*/
+}
+div#pagebody {
+	width:820px; margin:0 auto;	/*内容全体をセンタリング*/
+	text-align:left;	/*テキストの配置を左揃えにする*/
+	background-color:#ffffff;		/*内容全体の背景色*/
+}
+
+/*============================================
+ヘッダ
+============================================*/
+div#header {
+	height:77px;	/*背景画像のサイズに合わせてボックスの高さを指定*/
+	background-color:#cccccc;		/*ヘッダ部分の背景色*/
+}
+h1 {
+	padding:20px 0px 0px 30px;		/*見出し内容の位置調整*/
+	font-family:Arial, Helvetica, sans-serif;	/*フォントの種類*/
+}
+h1 a {text-decoration:none;} 			/*リンクの下線を無くす*/
+
+/*============================================
+メインメニュー
+============================================*/
+ul#menu {
+	height:42px; background-color:#eeeeee; font-weight:bold;
+}
+li#menu01,li#menu02 {
+	float:left;			/*リスト項目を横に並べる*/
+	display:inline;			/*リスト項目をインライン表示にする*/
+	list-style-type:none;		/*リストマーカー無しにする*/
+}
+
+/*ボタン01～にはそれぞれ異なる背景画像を指定する*/
+li#menu01 {
+	width:164px; height:42px;	/*背景画像に合わせたサイズ指定*/
+	background: #eeeeee;	/*背景色*/
+}
+li#menu02 {
+	width:156px; height:42px;	/*背景画像に合わせたサイズ指定*/
+	background: #eeeeee;	/*背景色*/
+}
+ul#menu a {
+	display:block;				/*リンクをブロック表示にする*/
+	height:42px; padding-top:4px; text-align:center;
+	text-decoration:none; 			/*リンクの下線を無くす*/
+	font-family:Arial, Helvetica, sans-serif;	/*フォントの種類*/
+}
+
+/*============================================
+コンテンツ（中央）
+============================================*/
+div#content {
+	width:820px; height:420px;
+	margin:0 auto;	/*幅の指定と位置調整*/
+	background-color:#ffffff;
+}
+
+
+/*============================================
+セレクトボックス
+============================================*/
+div.selectbox {
+	width:260px;
+	height:200px;
+	float:left;
+	margin: 5px 5px 5px 5px;
+}
+
+/*============================================
+設定ボックス
+============================================*/
+div.select_setting {
+	width:260px;
+	height:200px;
+	background-color:#eeeeee;
+}
+
+h2.st {
+	text-align:left;
+}
+
+div.st_pulldown {
+	width:165px; float:left;
+}
+
+div.pd_left {
+	width:80px; margin-right: 5px; float:left;
+}
+
+div.pd_right {
+	width:75px; float:right;
+}
+
+select {
+	font-size:22px;
+	border:1px;
+}
+
+div.st_button {
+	width:80px; float:right;
+}
+
+button.st {
+	width:70px; height:30px;
+	font-size: 22px;
+}
+
+/*============================================
+二択セレクトボックス
+============================================*/
+div.select_two {
+	width:260px;
+	height:200px;
+	background-color:#eeeeee;
+}
+
+h2.s2 {
+	text-align:left;
+}
+
+h2#s2_green.s2 {
+	color:#7fff00;
+}
+
+h2#s2_blue.s2 {
+	color:#0000ff;
+}
+
+h2#s2_red.s2 {
+	color:#ff0000;
+}
+
+div.button_s2_left {
+	width:120px; height:150px;
+	padding:5px 5px 5px 5px;
+	float: left;
+	background-color:#dddddd;
+}
+
+div.button_s2_right {
+	width:120px;
+	padding:5px 5px 5px 5px;
+	float: right;
+	background-color:#dddddd;
+}
+
+/*============================================
+一択セレクトボックス
+============================================*/
+div.select_one {
+	width:260px;
+	height:200px;
+	margin: 5px;
+	background-color:#eeeeee;
+	float: left;
+}
+
+h2.s1 {
+	text-align:left;
+}
+
+button.s1 {
+	margin: 5px 70px 5px 70px;
+}

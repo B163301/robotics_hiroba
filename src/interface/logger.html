@@ -1,0 +1,49 @@
+<HTML>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" type="text/css" href="mystyle.css">
+		<title>ロボティクス広場の植物工場 LOGGER</title>
+	</head>
+	<body>
+	<div id='pagebody'>
+		<header><!-- イントロダクションやナビゲーショングループであることを示す -->
+			<!-- ヘッダ -->
+			<div id="header"><h1><a href='./index.html'>ロボティクス広場の植物工場</a></h1></div>
+			
+			<nav><!-- ナビゲーションであることを示す -->
+				<!-- メインメニュー -->
+				<ul id="menu">
+					<li id="menu01"><a href="./controller.html">コントローラ</a></li>
+					<li id="menu02" style="background-color:#ff7f7f"><a href="./logger.html">ロガー</a></li>
+				</ul>
+			</nav>
+		</header>
+		<div id="content">
+			<div class="select_one">
+				<h2 class="s1">センサデータを見る</h2>
+				<button class="s1" type="button" onclick="location.href='./fig_sensor.html'">
+					<img src="./icon/data.png" alt="センサデータを見る" width=120>
+					<br>センサデータ
+				</button>
+			</div>
+			<div class="select_one">
+				<h2 class="s1">写真を見る</h2>
+				<button class="s1" type="button" onclick="location.href='./img_viewer.html'">
+					<img src="./icon/photo.png" alt="写真を見る" width=120>
+					<br>写真一覧
+				</button>
+			</div>
+			<div class="select_one">
+				<h2 class="s1">LEDの設定を確認する</h2>
+				<form action="http://192.168.24.64:1880/getled" method="get">
+					<button class="s1" type="submit">
+						<img src="./icon/time.png" alt="LEDの設定を確認する" width=120>
+						<br>確認
+					</button>
+				</form>
+			</div>
+		</div><!-- content -->
+	</div><!-- pagebody -->
+	</body>
+</HTML>
+

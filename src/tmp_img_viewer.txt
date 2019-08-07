@@ -1,0 +1,16 @@
+<HTML>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>ロボティクス広場の植物工場 Viewer</title>
+		<link rel="stylesheet" type="text/css" href="mystyle.css">
+	</head>
+	<body>
+		<header class="topNavigation">
+			<h1>がぞう いちらん</h1>
+		</header>
+		<div class="content">
+{}
+		</div>
+	</body>
+</HTML>
+
