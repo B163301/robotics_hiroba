@@ -7,6 +7,7 @@
 	margin:0; padding:0; 	/*全要素のマージン・パディングをリセット*/
 	line-height:1.5;	/*全要素の行の高さを1.5倍にする*/
 	color:#333333;		/*文字色*/
+	-webkit-appearance: none;	/*プラットフォーム独自の装飾を除去*/
 } 
 body {
 	background-color:#999999;	/*ページ全体の背景色*/

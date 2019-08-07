@@ -6,6 +6,9 @@ from make_viewer import make_img_viewer_html
 from make_figure import output_figure_html
 import time
 import os
+from PIL import Image
+from PIL.ExifTags import TAGS, GPSTAGS
+import io
 import json
 from collections import OrderedDict
 
@@ -26,13 +29,8 @@ def get_args():
     parser.add_argument('--outf_viewer', type=str, default='../src/interface/img_viewer.html', help='Output file of image viewer')
     parser.add_argument('--outdir_viewer', type=str, default='./photo/', help='Output directory of image viewer')
     parser.add_argument('--tmp_viewer', type=str, default='../src/tmp_img_viewer.txt', help='Template file of image viewer')
-    parser.add_argument('--inf_takenphoto1', type=str, default='../data/list_takenphoto1.txt', help='Input file of name list of taken photo file on raspberry pi')
-    parser.add_argument('--inf_takenphoto2', type=str, default='../data/list_takenphoto2.txt', help='Input file of name list of taken photo file on raspberry pi')
     parser.add_argument('--outf_savedphoto', type=str, default='../data/list_savedphoto.txt', help='Input file of name list of saved photo file')
     parser.add_argument('--outdir_photo', type=str, default='../src/interface/photo/', help='Output directory of photo file')
-    parser.add_argument('--outdir_photo1', type=str, default='../data/photo1/', help='DEBUG mode; Output directory of photo file on raspberry pi')
-    parser.add_argument('--outdir_photo2', type=str, default='../data/photo2/', help='DEBUG mode; Output directory of photo file on raspberry pi')
-    parser.add_argument('--debug', action='store_true')
     return parser.parse_args()
 
 
@@ -80,12 +78,10 @@ def save_sensor(outf, client):
         print('\tdid not get data')
 
 
-def save_camera(inf, outf, outdir, client, page='getimg'):
+def save_camera(outf, outdir, client, page='getimg'):
     """
     Parameters
     ----------
-    inf : str
-        新たに撮影された画像ファイル名一覧のtxt file
     outf : str
         マザーに保存済みの画像ファイル名一覧のtxt file
     outdir : str
@@ -94,52 +90,58 @@ def save_camera(inf, outf, outdir, client, page='getimg'):
     page : str
         接続先ページ
     """
+
+    def extract_datetimeoriginal(img):
+        """
+        Parameters
+        ----------
+        img: 
+            GETコマンドに返信されてきたバイナリデータ
+
+        Returns
+        -------
+        photoname: str
+            撮影日時をYYYYMMDDHHMMSS形式の文字列で表したもの
+        """
+        img_bin = io.BytesIO(img)
+        pil_img = Image.open(img_bin)
+        modified_bin = io.BytesIO()
+        pil_img.save(modified_bin, format='JPEG')
+        exif = pil_img._getexif()
+        for id, value in exif.items():
+            if TAGS.get(id) == 'DateTimeOriginal':
+                datestr = value
+        datestr = datestr.replace(':', '')
+        datestr = datestr.replace('-', '')
+        photoname = datestr.replace(' ', '')
+        return photoname
+
     print('save_camera')
-    if os.path.exists(inf):
-        with open(inf, 'r') as f:
-            photonames = f.read().split('\n')[:-1]  # 新たに撮影された画像ファイル名一覧
-        flag_rm = True
-        for photoname in photonames:
-            img = client.send({'name': photoname}, page)
-            if img is not None:
-                print('\tgot {}'.format(photoname))
-                filename = '{}photo_{}_{}.jpeg'.format(outdir, client.clientname, photoname)
-                with open(filename, 'wb') as f:  # 画像を保存
-                    f.write(img)
-                with open(outf, 'a') as f:  # 保存済み画像ファイル名を追記
-                    f.write(filename + '\n')
-            else:
-                print('\tcould not get {}'.format(photoname))
-                flag_rm = False
-        if flag_rm:
-            os.remove(inf)
+    img = client.send({}, page)
+    if img is not None:
+        if img != 'None':
+            photoname = extract_datetimeoriginal(img)
+            print('\tgot {}'.format(photoname))
+            filename = '{}photo_{}_{}.jpeg'.format(outdir, client.clientname, photoname)
+            with open(filename, 'wb') as f:  # 画像を保存
+                f.write(img)
+            with open(outf, 'a') as f:  # 保存済み画像ファイル名を追記
+                f.write(filename + '\n')
+        else:
+            print('\tcould not get(end)')
     else:
-        print('\ttakenphoto does not exist')
+        print('\tcould not get(error)')
 
 
-def take_camera(client, photoname, outf, debug, outdir='', page='/shutter'):
+def take_camera(client, page='/shutter'):
     """
     client : str
         カメララズパイのMyClient
-    photoname : str
-        新たに撮影する画像名
-    outf : str
-        新たに撮影された画像ファイル名一覧のtxt file
-    debug : bool
-        Trueならば、撮影した画像の代わりのファイルを用意
-    outdir : str
-        Raspberry Pi側の画像保存先ディレクトリ名。debug Trueのときのみ必要。
     page : str
         接続先ページ
     """
-    print('take_camera {}'.format(photoname))
-    client.send({'name': photoname}, page)
-    if debug:
-        filename = '{}photo_{}.jpeg'.format(outdir, photoname)
-        with open(filename, 'w') as f:
-            f.write('test')
-    with open(outf, 'a') as f:
-        f.write(photoname + '\n')
+    print('take_camera')
+    client.send({}, page)
 
 
 if __name__ == '__main__':
@@ -148,28 +150,25 @@ if __name__ == '__main__':
     sensor = MyClient(args.ip_sensor, args.port, clientname='sensor')
     camera1 = MyClient(args.ip_camera1, args.port, clientname='camera1')
     camera2 = MyClient(args.ip_camera2, args.port, clientname='camera2')
-    while True:
+    if True:
         print('\n-----')
         dt_now = datetime.datetime.now()
-        # if True:
-        delta = dt_now - dt_before
-        if (delta.total_seconds() > args.delay_photo1) or (delta.total_seconds() < 20):
-            dt_now_str = dt_now.strftime('%Y%m%d%H%M%S')
-            take_camera(camera1, dt_now_str, args.inf_takenphoto1, args.debug, outdir=args.outdir_photo1, page='/shutter1')
-            # take_camera(camera2, dt_now_str, args.inf_takenphoto2, args.debug, outdir=args.outdir_photo2, page='/shutter2')
+        #delta = dt_now - dt_before
+        #if (delta.total_seconds() > args.delay_photo1) or (delta.total_seconds() < 20):
+        if True:
+            take_camera(camera1, page='/shutter1')
+            # take_camera(camera2, page='/shutter2')
             dt_before = dt_now
         save_sensor(args.outf_sensor, sensor)
         output_figure_html(args.outf_sensor, args.outf_fig_sensor)
-        save_camera(args.inf_takenphoto1,
-                    args.outf_savedphoto,
+        save_camera(args.outf_savedphoto,
                     args.outdir_photo,
                     camera1,
                     '/getimg1')
-#         save_camera(args.inf_takenphoto2,
-#                     args.outf_savedphoto,
-#                     args.outdir_photo,
-#                     camera2,
-#                     '/getimg2')
+#        save_camera(args.outf_savedphoto,
+#                    args.outdir_photo,
+#                    camera2,
+#                    '/getimg2')
         make_img_viewer_html(args.outf_savedphoto,
                              args.tmp_viewer,
                              args.outf_viewer,
