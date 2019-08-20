@@ -24,7 +24,7 @@ div#pagebody {
 ============================================*/
 div#header {
 	height:77px;	/*背景画像のサイズに合わせてボックスの高さを指定*/
-	background-color:#cccccc;		/*ヘッダ部分の背景色*/
+	background-color:#ffffff;		/*ヘッダ部分の背景色*/
 }
 h1 {
 	padding:20px 0px 0px 30px;		/*見出し内容の位置調整*/
@@ -36,22 +36,24 @@ h1 a {text-decoration:none;} 			/*リンクの下線を無くす*/
 メインメニュー
 ============================================*/
 ul#menu {
-	height:42px; background-color:#eeeeee; font-weight:bold;
+	height:45px; background-color:#3A8557; font-weight:bold;
 }
 li#menu01,li#menu02 {
 	float:left;			/*リスト項目を横に並べる*/
 	display:inline;			/*リスト項目をインライン表示にする*/
 	list-style-type:none;		/*リストマーカー無しにする*/
+	margin-top:5px;
 }
 
 /*ボタン01～にはそれぞれ異なる背景画像を指定する*/
 li#menu01 {
-	width:164px; height:42px;	/*背景画像に合わせたサイズ指定*/
-	background: #eeeeee;	/*背景色*/
+	margin-left:5px;
+	width:164px; height:40px;	/*背景画像に合わせたサイズ指定*/
+	background: #2BA75F;	/*背景色*/
 }
 li#menu02 {
-	width:156px; height:42px;	/*背景画像に合わせたサイズ指定*/
-	background: #eeeeee;	/*背景色*/
+	width:164px; height:40px;	/*背景画像に合わせたサイズ指定*/
+	background: #2BA75F;	/*背景色*/
 }
 ul#menu a {
 	display:block;				/*リンクをブロック表示にする*/
@@ -108,6 +110,7 @@ div.pd_right {
 select {
 	font-size:22px;
 	border:1px;
+	background-color:#ffffff;
 }
 
 div.st_button {
@@ -117,6 +120,7 @@ div.st_button {
 button.st {
 	width:70px; height:30px;
 	font-size: 22px;
+	background-color:#ffffff;
 }
 
 /*============================================
@@ -133,7 +137,7 @@ h2.s2 {
 }
 
 h2#s2_green.s2 {
-	color:#7fff00;
+	color:#2BA75F;
 }
 
 h2#s2_blue.s2 {

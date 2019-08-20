@@ -26,6 +26,7 @@ def get_args():
     parser.add_argument('--port', type=str, default='1880', help='Port for node-red of raspberry pi')
     parser.add_argument('--outf_sensor', type=str, default='../data/data_sensor.json', help='Output file of sensor data')
     parser.add_argument('--outf_fig_sensor', type=str, default='../src/interface/fig_sensor.html', help='Output file of figure of sensor ')
+    parser.add_argument('--limit_point', type=int, default=20, help='Limit number of data point ')
     parser.add_argument('--outf_viewer', type=str, default='../src/interface/img_viewer.html', help='Output file of image viewer')
     parser.add_argument('--outdir_viewer', type=str, default='./photo/', help='Output directory of image viewer')
     parser.add_argument('--tmp_viewer', type=str, default='../src/tmp_img_viewer.txt', help='Template file of image viewer')
@@ -119,7 +120,7 @@ def save_camera(outf, outdir, client, page='getimg'):
     print('save_camera')
     img = client.send({}, page)
     if img is not None:
-        if img != 'None':
+        if img != b'None':
             photoname = extract_datetimeoriginal(img)
             print('\tgot {}'.format(photoname))
             filename = '{}photo_{}_{}.jpeg'.format(outdir, client.clientname, photoname)
@@ -127,10 +128,13 @@ def save_camera(outf, outdir, client, page='getimg'):
                 f.write(img)
             with open(outf, 'a') as f:  # 保存済み画像ファイル名を追記
                 f.write(filename + '\n')
+            return 'continue'
         else:
             print('\tcould not get(end)')
+            return 'end'
     else:
         print('\tcould not get(error)')
+        return 'error'
 
 
 def take_camera(client, page='/shutter'):
@@ -150,21 +154,22 @@ if __name__ == '__main__':
     sensor = MyClient(args.ip_sensor, args.port, clientname='sensor')
     camera1 = MyClient(args.ip_camera1, args.port, clientname='camera1')
     camera2 = MyClient(args.ip_camera2, args.port, clientname='camera2')
-    if True:
+    while True:
         print('\n-----')
         dt_now = datetime.datetime.now()
-        #delta = dt_now - dt_before
-        #if (delta.total_seconds() > args.delay_photo1) or (delta.total_seconds() < 20):
-        if True:
+        delta = dt_now - dt_before
+        if (delta.total_seconds() > args.delay_photo1) or (delta.total_seconds() < 20):
             take_camera(camera1, page='/shutter1')
             # take_camera(camera2, page='/shutter2')
             dt_before = dt_now
         save_sensor(args.outf_sensor, sensor)
-        output_figure_html(args.outf_sensor, args.outf_fig_sensor)
-        save_camera(args.outf_savedphoto,
-                    args.outdir_photo,
-                    camera1,
-                    '/getimg1')
+        output_figure_html(args.outf_sensor, args.outf_fig_sensor, args.limit_point)
+        status = 'continue'
+        while status == 'continue':
+            status = save_camera(args.outf_savedphoto,
+                                 args.outdir_photo,
+                                 camera1,
+                                 '/getimg1')
 #        save_camera(args.outf_savedphoto,
 #                    args.outdir_photo,
 #                    camera2,

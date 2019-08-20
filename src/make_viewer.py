@@ -44,7 +44,8 @@ def make_img_viewer_html(inf, tmpf, outf, outdir):
     imglist = ''
     for fname in fnames:
         fname = outdir + os.path.basename(fname)
-        title = '{}年{}月{}日{}時{}分{}秒'.format(
+        title = '{}: {}年{}月{}日{}時{}分{}秒'.format(
+            fname[-27:-20],
             fname[-19:-15], fname[-15:-13], fname[-13:-11],
             fname[-11:-9], fname[-9:-7], fname[-7:-5])
         imglist += tmp_img.format(

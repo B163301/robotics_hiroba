@@ -1,1 +1,7 @@
-../src/interface/photo/photo_camera1_20190807183652.jpeg
+../src/interface/photo/photo_camera1_20190820105057.jpeg
+../src/interface/photo/photo_camera1_20190820105310.jpeg
+../src/interface/photo/photo_camera1_20190820105312.jpeg
+../src/interface/photo/photo_camera1_20190820105812.jpeg
+../src/interface/photo/photo_camera1_20190820105815.jpeg
+../src/interface/photo/photo_camera1_20190820111305.jpeg
+../src/interface/photo/photo_camera1_20190820111308.jpeg
