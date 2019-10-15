@@ -61,8 +61,8 @@ def load(filename, limit):
         dtime = np.array(dtime)
         # データ点数の制限
         if len(dtime) > limit:
-            data = data[:, limit:]
-            dtime = dtime[limit:]
+            data = data[:, -limit:]
+            dtime = dtime[-limit:]
     return data, dtime, header
 
 

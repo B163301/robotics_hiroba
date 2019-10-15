@@ -19,14 +19,14 @@ from collections import OrderedDict
 def get_args():
     parser = argparse.ArgumentParser(description='Mother')
     parser.add_argument('--delay_sensor', type=int, default=60, help='second')
-    parser.add_argument('--delay_photo1', type=int, default=3600, help='second')
+    parser.add_argument('--delay_photo1', type=int, default=28800, help='second')
     parser.add_argument('--ip_sensor', type=str, default='192.168.24.64', help='IP address for Sensor raspberry pi')
     parser.add_argument('--ip_camera1', type=str, default='192.168.24.64', help='IP address for Camera1 raspberry pi')
     parser.add_argument('--ip_camera2', type=str, default='192.168.24.65', help='IP address for camera2 raspberry pi')
     parser.add_argument('--port', type=str, default='1880', help='Port for node-red of raspberry pi')
     parser.add_argument('--outf_sensor', type=str, default='../data/data_sensor.json', help='Output file of sensor data')
     parser.add_argument('--outf_fig_sensor', type=str, default='../src/interface/fig_sensor.html', help='Output file of figure of sensor ')
-    parser.add_argument('--limit_point', type=int, default=20, help='Limit number of data point ')
+    parser.add_argument('--limit_point', type=int, default=120, help='Limit number of data point ')
     parser.add_argument('--outf_viewer', type=str, default='../src/interface/img_viewer.html', help='Output file of image viewer')
     parser.add_argument('--outdir_viewer', type=str, default='./photo/', help='Output directory of image viewer')
     parser.add_argument('--tmp_viewer', type=str, default='../src/tmp_img_viewer.txt', help='Template file of image viewer')
@@ -170,10 +170,10 @@ if __name__ == '__main__':
                                  args.outdir_photo,
                                  camera1,
                                  '/getimg1')
-#        save_camera(args.outf_savedphoto,
-#                    args.outdir_photo,
-#                    camera2,
-#                    '/getimg2')
+        save_camera(args.outf_savedphoto,
+                    args.outdir_photo,
+                    camera2,
+                    '/getimg2')
         make_img_viewer_html(args.outf_savedphoto,
                              args.tmp_viewer,
                              args.outf_viewer,
